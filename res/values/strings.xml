@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Daisy On/Off</string>
+
+    <string name="prefs_which_daisy_key">com.daisyworks.prefs.whichDaisy</string>
+    <string name="prefs_which_daisy_title">Daisy</string>
+    <string name="prefs_which_daisy_summary">
+      Select the daisy you wish to control. 
+    </string>
+    <string name="prefs_which_daisy_dialog_title">Select Daisy</string>
+    
+    <string name="prefs_button_count_key">com.daisyworks.prefs.buttonCount</string>
+    <string name="prefs_button_count_title">Number of Buttons</string>
+    <string name="prefs_button_count_summary">
+      Select the number of buttons you wish to have available. This should correspond to the number of devices connected to your Daisy. 
+    </string>
+    <string name="prefs_button_count_dialog_title">Number Of Buttons</string>
+
+    <string name="prefs_button_config">Button Configuration</string>
+    
+    <string name="prefs_button1_config">Button One Options</string>
+    <string name="prefs_button2_config">Button Two Options</string>
+    <string name="prefs_button3_config">Button Three Options</string>
+    <string name="prefs_button4_config">Button Four Options</string>
+    <string name="prefs_button5_config">Button Five Options</string>
+    
+    <string name="prefs_button1_label_key">com.daisyworks.prefs.buttonLabel1</string>
+    <string name="prefs_button2_label_key">com.daisyworks.prefs.buttonLabel2</string>
+    <string name="prefs_button3_label_key">com.daisyworks.prefs.buttonLabel3</string>
+    <string name="prefs_button4_label_key">com.daisyworks.prefs.buttonLabel4</string>
+    <string name="prefs_button5_label_key">com.daisyworks.prefs.buttonLabel5</string>
+    
+    <string name="prefs_button_label_title">Button Label</string>
+    <string name="prefs_button_label_summary">
+      Enter the text you wish to appear on this button 
+    </string>
+    <string name="prefs_button_label_dialog_title">Button Label</string>
+
+    <string name="prefs_button_pin_title">Pin</string>
+    <string name="prefs_button_pin_summary">
+      Select the pin you wish to control with this button.  
+    </string>
+    <string name="prefs_button_pin_dialog_title">Select Pin</string>
+
+    <string name="prefs_button1_pin_key">com.daisyworks.prefs.buttonPin1</string>
+    <string name="prefs_button2_pin_key">com.daisyworks.prefs.buttonPin2</string>
+    <string name="prefs_button3_pin_key">com.daisyworks.prefs.buttonPin3</string>
+    <string name="prefs_button4_pin_key">com.daisyworks.prefs.buttonPin4</string>
+    <string name="prefs_button5_pin_key">com.daisyworks.prefs.buttonPin5</string>
+
+    <string name="prefs_button_type_title">Button Behavior</string>
+    <string name="prefs_button_type_summary">
+      Select between toggling the output on and off, turning the output on for one second and turning the output on only while the button is held.  
+    </string>
+    <string name="prefs_button_type_dialog_title">Select Behavior</string>
+
+    <string name="prefs_button1_type_key">com.daisyworks.prefs.buttonType1</string>
+    <string name="prefs_button2_type_key">com.daisyworks.prefs.buttonType2</string>
+    <string name="prefs_button3_type_key">com.daisyworks.prefs.buttonType3</string>
+    <string name="prefs_button4_type_key">com.daisyworks.prefs.buttonType4</string>
+    <string name="prefs_button5_type_key">com.daisyworks.prefs.buttonType5</string>
+
+    <string name="prefs.button.tag.id">com.daisyworks.prefs.tag.id</string>
+                
+</resources>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/deviceListLayout"
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent">
+              
+        <LinearLayout android:id="@+id/main.topLayout" 
+                      android:layout_height="wrap_content" 
+                      android:layout_width="fill_parent" 
+                      android:background="#999">
+            <TextView android:layout_height="wrap_content" 
+                      android:layout_width="wrap_content" 
+                      android:text="@string/app_name" 
+                      android:id="@+id/daisyLabel" 
+                      android:textColor="#FFF" 
+                      android:textStyle="bold" 
+                      android:padding="4px">
+            </TextView>
+            <TextView android:layout_height="wrap_content" 
+                      android:text="" 
+                      android:gravity="right" 
+                      android:layout_gravity="right" 
+                      android:layout_width="fill_parent" 
+                      android:layout_weight="1" 
+                      android:padding="4px" 
+                      android:textColor="#FFF" 
+                      android:id="@+id/main.connectionStatus">
+            </TextView>
+            <ProgressBar style="@android:style/Widget.ProgressBar.Small" 
+                         android:layout_height="wrap_content" 
+                         android:id="@+id/main.connectionProgress" 
+                         android:layout_width="wrap_content" 
+                         android:visibility="invisible" 
+                         android:padding="4px">
+            </ProgressBar>
+        </LinearLayout>
+    
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="fill_parent"
+                      android:layout_height="100dp"
+                      android:layout_marginTop="20px"
+                      android:layout_marginLeft="20px"
+                      android:layout_marginRight="20px">
+    
+                <Button android:text="Button" 
+                        android:id="@+id/main.button1"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </Button>
+
+                <ToggleButton android:text="Button" 
+                        android:id="@+id/main.toggleButton1"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </ToggleButton>
+        
+                <Button android:text="Button" 
+                        android:id="@+id/main.button2" 
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </Button>
+
+                <ToggleButton android:text="Button" 
+                        android:id="@+id/main.toggleButton2"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </ToggleButton>
+
+       </LinearLayout>
+    
+    
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="fill_parent"
+                      android:layout_height="100dp"
+                      android:layout_marginTop="20px"
+                      android:layout_marginLeft="20px"
+                      android:layout_marginRight="20px">
+    
+                <Button android:text="Button" 
+                        android:id="@+id/main.button3"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </Button>
+
+                <ToggleButton android:text="Button" 
+                        android:id="@+id/main.toggleButton3"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </ToggleButton>
+        
+                <Button android:text="Button" 
+                        android:id="@+id/main.button4" 
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </Button>
+                
+                <ToggleButton android:text="Button" 
+                        android:id="@+id/main.toggleButton4"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </ToggleButton>
+                
+       </LinearLayout>
+    
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="fill_parent"
+                      android:layout_height="100dp"
+                      android:layout_marginTop="20px"
+                      android:layout_marginLeft="20px"
+                      android:layout_marginRight="20px">
+    
+                <Button android:text="Button" 
+                        android:id="@+id/main.button5"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </Button>
+
+                <ToggleButton android:text="Button" 
+                        android:id="@+id/main.toggleButton5"  
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"                    
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+                </ToggleButton>
+        
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"                  
+                  android:layout_alignParentBottom="true" >
+    </LinearLayout>
+    
+</RelativeLayout>

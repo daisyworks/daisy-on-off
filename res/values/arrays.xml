@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>       
+    
+    <string-array name="prefs_button_count_entries">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="prefs_pin_entries">
+        <item>Pin 1 (PIO 03)</item>
+        <item>Pin 2 (PIO 06)</item>
+        <item>Pin 3 (PIO 07)</item>
+        <item>Pin 4 (PIO 10)</item>
+        <item>Pin 5 (PIO 11)</item>
+    </string-array>
+
+    <string-array name="prefs_pin_entry_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="prefs_button_type_entries">
+        <item>On/Off</item>
+        <item>One Second Pulse</item>
+        <item>Hold to Pulse</item>
+    </string-array>
+
+    <string-array name="prefs_button_type_entry_values">
+        <item>ON_OFF</item>
+        <item>PULSE</item>
+        <item>HOLD_PULSE</item>
+    </string-array>
+  
+</resources>
