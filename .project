@@ -32,6 +32,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>daisy-android-common_src</name>
+			<type>2</type>
+			<locationURI>_android_daisy_android_common_5a97df44/src</locationURI>
+		</link>
+		<link>
 			<name>daisyworks-bluetooth-library_src</name>
 			<type>2</type>
 			<locationURI>_android_daisyworks_bluetooth_library_a3646bdf/src</locationURI>
