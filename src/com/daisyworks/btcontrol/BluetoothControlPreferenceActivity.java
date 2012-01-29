@@ -44,7 +44,23 @@ public class BluetoothControlPreferenceActivity extends PreferenceActivity
       ids.add(device.getAddress());
     }
 
-    final ListPreference pref = (ListPreference)findPreference(getString(R.string.prefs_which_daisy_key));
+    ListPreference pref = (ListPreference)findPreference(getString(R.string.prefs_button1_which_daisy_key));
+    pref.setEntries(names.toArray(new String[names.size()]));
+    pref.setEntryValues(ids.toArray(new String[ids.size()]));
+
+    pref = (ListPreference)findPreference(getString(R.string.prefs_button2_which_daisy_key));
+    pref.setEntries(names.toArray(new String[names.size()]));
+    pref.setEntryValues(ids.toArray(new String[ids.size()]));
+
+    pref = (ListPreference)findPreference(getString(R.string.prefs_button3_which_daisy_key));
+    pref.setEntries(names.toArray(new String[names.size()]));
+    pref.setEntryValues(ids.toArray(new String[ids.size()]));
+
+    pref = (ListPreference)findPreference(getString(R.string.prefs_button4_which_daisy_key));
+    pref.setEntries(names.toArray(new String[names.size()]));
+    pref.setEntryValues(ids.toArray(new String[ids.size()]));
+
+    pref = (ListPreference)findPreference(getString(R.string.prefs_button5_which_daisy_key));
     pref.setEntries(names.toArray(new String[names.size()]));
     pref.setEntryValues(ids.toArray(new String[ids.size()]));
   }

@@ -1,11 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
   <PreferenceCategory android:title="@string/settings">
-
-    <ListPreference android:key="@string/prefs_which_daisy_key"
-                      android:title="@string/prefs_which_daisy_title"
-                      android:summary="@string/prefs_which_daisy_summary"
-                      android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
   
     <ListPreference android:key="@string/prefs_button_count_key"
                       android:title="@string/prefs_button_count_title"
@@ -19,6 +14,11 @@
   <PreferenceCategory android:title="@string/prefs_button_config">
   
     <PreferenceScreen android:title="@string/prefs_button1_config">
+
+        <ListPreference android:key="@string/prefs_button1_which_daisy_key"
+                        android:title="@string/prefs_which_daisy_title"
+                        android:summary="@string/prefs_which_daisy_summary"
+                        android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
     
         <EditTextPreference android:key="@string/prefs_button1_label_key"
                             android:dialogTitle="@string/prefs_button_label_dialog_title"
@@ -45,6 +45,11 @@
 
     <PreferenceScreen android:title="@string/prefs_button2_config">
     
+        <ListPreference android:key="@string/prefs_button2_which_daisy_key"
+                          android:title="@string/prefs_which_daisy_title"
+                          android:summary="@string/prefs_which_daisy_summary"
+                          android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
+    
         <EditTextPreference android:key="@string/prefs_button2_label_key"
                             android:dialogTitle="@string/prefs_button_label_dialog_title"
                             android:dialogMessage="@string/prefs_button_label_summary"
@@ -69,6 +74,11 @@
     </PreferenceScreen>
 
     <PreferenceScreen android:title="@string/prefs_button3_config">
+
+        <ListPreference android:key="@string/prefs_button3_which_daisy_key"
+                          android:title="@string/prefs_which_daisy_title"
+                          android:summary="@string/prefs_which_daisy_summary"
+                          android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
     
         <EditTextPreference android:key="@string/prefs_button3_label_key"
                             android:dialogTitle="@string/prefs_button_label_dialog_title"
@@ -94,6 +104,11 @@
     </PreferenceScreen>
 
     <PreferenceScreen android:title="@string/prefs_button4_config">
+
+        <ListPreference android:key="@string/prefs_button4_which_daisy_key"
+                          android:title="@string/prefs_which_daisy_title"
+                          android:summary="@string/prefs_which_daisy_summary"
+                          android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
     
         <EditTextPreference android:key="@string/prefs_button4_label_key" 
                             android:dialogTitle="@string/prefs_button_label_dialog_title"
@@ -119,6 +134,11 @@
     </PreferenceScreen>
 
     <PreferenceScreen android:title="@string/prefs_button5_config">
+
+        <ListPreference android:key="@string/prefs_button5_which_daisy_key"
+                          android:title="@string/prefs_which_daisy_title"
+                          android:summary="@string/prefs_which_daisy_summary"
+                          android:dialogTitle="@string/prefs_which_daisy_dialog_title"/>
     
         <EditTextPreference android:key="@string/prefs_button5_label_key"
                             android:dialogTitle="@string/prefs_button_label_dialog_title"

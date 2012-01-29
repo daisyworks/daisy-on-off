@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">Daisy On/Off</string>
 
-    <string name="prefs_which_daisy_key">com.daisyworks.prefs.whichDaisy</string>
     <string name="prefs_which_daisy_title">Daisy</string>
     <string name="prefs_which_daisy_summary">
       Select the daisy you wish to control. 
@@ -41,6 +40,12 @@
       Select the pin you wish to control with this button.  
     </string>
     <string name="prefs_button_pin_dialog_title">Select Pin</string>
+
+    <string name="prefs_button1_which_daisy_key">com.daisyworks.prefs.buttonWhichDaisy1</string>
+    <string name="prefs_button2_which_daisy_key">com.daisyworks.prefs.buttonWhichDaisy2</string>
+    <string name="prefs_button3_which_daisy_key">com.daisyworks.prefs.buttonWhichDaisy3</string>
+    <string name="prefs_button4_which_daisy_key">com.daisyworks.prefs.buttonWhichDaisy4</string>
+    <string name="prefs_button5_which_daisy_key">com.daisyworks.prefs.buttonWhichDaisy5</string>
 
     <string name="prefs_button1_pin_key">com.daisyworks.prefs.buttonPin1</string>
     <string name="prefs_button2_pin_key">com.daisyworks.prefs.buttonPin2</string>
