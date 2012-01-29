@@ -19,6 +19,9 @@
 */
 package com.daisyworks.btcontrol;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -40,6 +43,7 @@ import com.daisyworks.android.HelpActivity;
 import com.daisyworks.android.bluetooth.AbstractBluetoothActivity;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.EnterCmdModeAction;
+import com.daisyworks.android.bluetooth.R;
 
 public class BluetoothControlActivity extends AbstractBluetoothActivity implements OnClickListener, OnTouchListener
 {
@@ -58,8 +62,7 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
 
   private ButtonAttributes[] buttonAttributes;
 
-  private String deviceId = null;
-  private BTCommThread btComm;
+  private Map<String, BTCommThread> devices = new HashMap<String, BTCommThread>();
   private final Handler handler = new CommHandler();
 
   public BluetoothControlActivity()
@@ -74,15 +77,21 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
 
     setContentView(R.layout.main);
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    deviceId = sharedPrefs.getString(getString(R.string.prefs_which_daisy_key), null);
     final int buttonCount = Integer.valueOf(sharedPrefs.getString(getString(R.string.prefs_button_count_key), "-1"));
 
-    if (buttonCount < 1 || buttonCount > 5 || deviceId == null)
+    if (buttonCount < 1 || buttonCount > 5)
     {
-      Toast.makeText(this, "Please select select Daisy and configure buttons before continuing", Toast.LENGTH_LONG);
+      Toast.makeText(this, "Please configure buttons before continuing", Toast.LENGTH_LONG);
       openPreferences();
       return;
     }
+  }
+
+  @Override
+  protected void bluetoothEnabled ()
+  {
+    final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    final int buttonCount = Integer.valueOf(sharedPrefs.getString(getString(R.string.prefs_button_count_key), "-1"));
 
     buttonAttributes =
         new ButtonAttributes[]
@@ -96,23 +105,42 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
     {
       setupButton(buttonCount, buttonAttr);
     }
-  }
 
-  @Override
-  protected void bluetoothEnabled ()
-  {
-    btComm = getBtCommThreadforNewActivity(handler, deviceId, 60000, new EnterCmdModeAction());
-    btComm.enqueueAction(new SetupAction());
+    stopCommThreads();
+
+    for (final ButtonAttributes buttonAttr : buttonAttributes)
+    {
+      if (buttonAttr.getButtonNumber() <= buttonCount)
+      {
+        final String deviceId = buttonAttr.getDeviceId();
+        if (!devices.containsKey(deviceId))
+        {
+          final BTCommThread btComm = getBtCommThreadforNewActivity(handler, deviceId, 60000, new EnterCmdModeAction());
+          devices.put(deviceId, btComm);
+          btComm.enqueueAction(new SetupAction());
+        }
+      }
+    }
   }
 
   @Override
   protected void onPause ()
   {
     super.onPause();
-    if (btComm != null)
+    stopCommThreads();
+  }
+
+  protected void stopCommThreads()
+  {
+    for (final BTCommThread btComm : devices.values())
     {
-      btComm.updateTimeout(10000);
+      if (btComm != null)
+      {
+        btComm.shutdown();
+      }
     }
+
+    devices.clear();
   }
 
   private void setupButton(final int buttonCount, final ButtonAttributes buttonAttr)
@@ -199,24 +227,36 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
       }
       else if (buttonAttr.isPowerOn())
       {
-        pinOff(buttonAttr.getPin());
+        pinOff(buttonAttr);
         buttonAttr.setPowerOn(false);
       }
     }
   }
 
-  private void pinOn(final int pin)
+  private void pinOn(final ButtonAttributes button)
   {
+    final String deviceId = button.getDeviceId();
+    final BTCommThread btComm = devices.get(deviceId);
+    final int pin = button.getPin();
+
     btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][ON]));
   }
 
-  private void pinOff(final int pin)
+  private void pinOff(final ButtonAttributes button)
   {
+    final String deviceId = button.getDeviceId();
+    final BTCommThread btComm = devices.get(deviceId);
+    final int pin = button.getPin();
+
     btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][OFF]));
   }
 
-  private void sendPulse(final int pin)
+  private void sendPulse(final ButtonAttributes button)
   {
+    final String deviceId = button.getDeviceId();
+    final BTCommThread btComm = devices.get(deviceId);
+    final int pin = button.getPin();
+
     btComm.enqueueAction(new SendPulseAction(COMMANDS[pin][ON], COMMANDS[pin][OFF]));
   }
 
@@ -227,11 +267,11 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
 
     if (event.getAction() == MotionEvent.ACTION_DOWN)
     {
-      pinOn(buttonAttr.getPin());
+      pinOn(buttonAttr);
     }
     else if (event.getAction() == MotionEvent.ACTION_UP)
     {
-      pinOff(buttonAttr.getPin());
+      pinOff(buttonAttr);
     }
     return false;
   }
@@ -242,30 +282,50 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
     final ButtonAttributes buttonAttr = (ButtonAttributes)v.getTag(R.string.prefs_button_tag_id);
     if (buttonAttr.getBehavior() == ButtonBehavior.PULSE)
     {
-      sendPulse(buttonAttr.getPin());
+      sendPulse(buttonAttr);
     }
     else if (buttonAttr.getBehavior() == ButtonBehavior.ON_OFF)
     {
       if (buttonAttr.isPowerOn())
       {
-        pinOff(buttonAttr.getPin());
+        pinOff(buttonAttr);
         buttonAttr.setPowerOn(false);
       }
       else
       {
-        pinOn(buttonAttr.getPin());
+        pinOn(buttonAttr);
         buttonAttr.setPowerOn(true);
       }
       ((Button)v).setText(buttonAttr.getLabel());
     }
   }
 
-  class CommHandler extends BaseCommHandler
+  class CommHandler extends Handler
   {
+    @SuppressWarnings("synthetic-access")
     @Override
     public void handleMessage(final Message msg)
     {
       switch(msg.what) {
+        case BTCommThread.BLUETOOTH_START_CONNECT:
+          setStatus(R.string.bluetooth_connecting);
+          spinProgressBar(true);
+          break;
+
+        case BTCommThread.BLUETOOTH_CONNECTED:
+          setStatus(R.string.bluetooth_connected);
+          spinProgressBar(false);
+          break;
+
+        case BTCommThread.BLUETOOTH_CONNECTION_ERROR:
+          setStatus(R.string.bluetooth_connection_error);
+          spinProgressBar(false);
+          Toast.makeText(BluetoothControlActivity.this, R.string.bluetooth_connection_error_toast, Toast.LENGTH_SHORT);
+          break;
+        case BTCommThread.BLUETOOTH_CONNECTION_CLOSED:
+          setStatus(R.string.bluetooth_not_connected);
+          spinProgressBar(false);
+          break;
         case BUTTON_STATE_MESSAGE:
           updateButtonState((ButtonState)msg.obj);
           break;

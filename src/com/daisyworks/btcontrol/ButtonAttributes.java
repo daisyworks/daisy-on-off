@@ -36,6 +36,7 @@ public class ButtonAttributes
   private final String label;
   private final ButtonBehavior behavior;
   private final int pin;
+  private final String deviceId;
   private boolean powerOn;
 
   public static ButtonAttributes newInstance(final SharedPreferences sharedPrefs, final int buttonId, final int toggleButtonId, final int buttonNumber)
@@ -43,12 +44,13 @@ public class ButtonAttributes
     final String label = sharedPrefs.getString("com.daisyworks.prefs.buttonLabel" + buttonNumber, "Button");
     final String pinString = sharedPrefs.getString("com.daisyworks.prefs.buttonPin" + buttonNumber, "0");
     final String behaviorString = sharedPrefs.getString("com.daisyworks.prefs.buttonType" + buttonNumber, "ON_OFF");
+    final String deviceId = sharedPrefs.getString("com.daisyworks.prefs.button" + buttonNumber + "WhichDaisy", null);
     final boolean powerOn = sharedPrefs.getBoolean(CURRENT_POWER_STATE + buttonNumber, false);
 
     final int pin = Integer.valueOf(pinString);
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
 
-    return new ButtonAttributes(sharedPrefs, buttonId, toggleButtonId, buttonNumber, label, behavior, pin, powerOn);
+    return new ButtonAttributes(sharedPrefs, buttonId, toggleButtonId, buttonNumber, label, behavior, pin, deviceId, powerOn);
   }
 
   public ButtonAttributes (final SharedPreferences prefs,
@@ -58,6 +60,7 @@ public class ButtonAttributes
                            final String label,
                            final ButtonBehavior behavior,
                            final int pin,
+                           final String deviceId,
                            final boolean powerOn)
   {
     this.prefs = prefs;
@@ -67,6 +70,7 @@ public class ButtonAttributes
     this.label = label;
     this.behavior = behavior;
     this.pin = Math.min(Math.max(pin,0), 4); // ensure pin is between 0 and 4
+    this.deviceId = deviceId;
     this.powerOn = powerOn;
   }
 
@@ -103,6 +107,11 @@ public class ButtonAttributes
   public int getPhysicalPin ()
   {
     return PHYSICAL_PINS[pin];
+  }
+
+  public String getDeviceId()
+  {
+    return deviceId;
   }
 
   public boolean isPowerOn ()
