@@ -76,6 +76,7 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
     super.onStart();
 
     setContentView(R.layout.main);
+
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     final int buttonCount = Integer.valueOf(sharedPrefs.getString(getString(R.string.prefs_button_count_key), "-1"));
 
@@ -90,6 +91,8 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
   @Override
   protected void bluetoothEnabled ()
   {
+    setContentView(R.layout.main);
+
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     final int buttonCount = Integer.valueOf(sharedPrefs.getString(getString(R.string.prefs_button_count_key), "-1"));
 
