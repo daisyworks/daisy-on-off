@@ -96,13 +96,15 @@ public class BluetoothControlActivity extends AbstractBluetoothActivity implemen
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     final int buttonCount = Integer.valueOf(sharedPrefs.getString(getString(R.string.prefs_button_count_key), "-1"));
 
+    final String oldVersionDeviceId = sharedPrefs.getString(getString(R.string.prefs_which_daisy_key), null);
+
     buttonAttributes =
         new ButtonAttributes[]
-          { ButtonAttributes.newInstance(sharedPrefs, R.id.main_button1, R.id.main_toggleButton1, 1),
-            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button2, R.id.main_toggleButton2, 2),
-            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button3, R.id.main_toggleButton3, 3),
-            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button4, R.id.main_toggleButton4, 4),
-            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button5, R.id.main_toggleButton5, 5) };
+          { ButtonAttributes.newInstance(sharedPrefs, R.id.main_button1, R.id.main_toggleButton1, 1, oldVersionDeviceId),
+            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button2, R.id.main_toggleButton2, 2, oldVersionDeviceId),
+            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button3, R.id.main_toggleButton3, 3, oldVersionDeviceId),
+            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button4, R.id.main_toggleButton4, 4, oldVersionDeviceId),
+            ButtonAttributes.newInstance(sharedPrefs, R.id.main_button5, R.id.main_toggleButton5, 5, oldVersionDeviceId) };
 
     for (final ButtonAttributes buttonAttr : buttonAttributes)
     {

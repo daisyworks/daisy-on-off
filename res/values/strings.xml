@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Daisy On/Off</string>
 
+    <string name="prefs_which_daisy_key">com.daisyworks.prefs.whichDaisy</string> 
     <string name="prefs_which_daisy_title">Daisy</string>
     <string name="prefs_which_daisy_summary">
       Select the daisy you wish to control. 

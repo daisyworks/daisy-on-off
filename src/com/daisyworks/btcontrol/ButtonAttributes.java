@@ -39,12 +39,12 @@ public class ButtonAttributes
   private final String deviceId;
   private boolean powerOn;
 
-  public static ButtonAttributes newInstance(final SharedPreferences sharedPrefs, final int buttonId, final int toggleButtonId, final int buttonNumber)
+  public static ButtonAttributes newInstance(final SharedPreferences sharedPrefs, final int buttonId, final int toggleButtonId, final int buttonNumber, final String defaultDeviceId)
   {
     final String label = sharedPrefs.getString("com.daisyworks.prefs.buttonLabel" + buttonNumber, "Button");
     final String pinString = sharedPrefs.getString("com.daisyworks.prefs.buttonPin" + buttonNumber, "0");
     final String behaviorString = sharedPrefs.getString("com.daisyworks.prefs.buttonType" + buttonNumber, "ON_OFF");
-    final String deviceId = sharedPrefs.getString("com.daisyworks.prefs.button" + buttonNumber + "WhichDaisy", null);
+    final String deviceId = sharedPrefs.getString("com.daisyworks.prefs.button" + buttonNumber + "WhichDaisy", defaultDeviceId);
     final boolean powerOn = sharedPrefs.getBoolean(CURRENT_POWER_STATE + buttonNumber, false);
 
     final int pin = Integer.valueOf(pinString);
