@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="100dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginLeft="20dp"
+              android:layout_marginRight="20dp"
+              xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button android:text="@string/button.button" 
+            android:id="@+id/main.button1"  
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+    </Button>
+
+    <ToggleButton android:text="@string/button.button" 
+            android:id="@+id/main.toggleButton1"  
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"                    
+            android:layout_gravity="center"
+            android:layout_weight="1">
+    </ToggleButton>
+
+    <Button android:text="@string/button.button"  
+            android:id="@+id/main.button2" 
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+    </Button>
+    
+    <ToggleButton android:text="@string/button.button" 
+            android:id="@+id/main.toggleButton2"  
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"                    
+            android:layout_gravity="center"
+            android:layout_weight="1">
+    </ToggleButton>
+        
+</LinearLayout>

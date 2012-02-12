@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="buttonPressed1">#CC6600</color>
+    <color name="buttonPressed2">#DD7700</color>
+    
+    <color name="listBackground">#444</color>
+    <color name="bottomLayoutBackground">#333</color>
+
+    <color name="buttonOutlineGray">#666</color>
+ 
+    <color name="NotYetScanned">#FFF</color>
+    <color name="Scanning">#CC6</color>
+    <color name="InRange">#696</color>
+    <color name="NotInRange">#966</color>
+</resources>

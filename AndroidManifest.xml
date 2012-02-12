@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name="BluetoothControlPreferenceActivity"></activity>
+        <activity android:name="ConfigurationActivity"></activity>
         <activity android:name="com.daisyworks.android.HelpActivity"></activity>
 
     </application>

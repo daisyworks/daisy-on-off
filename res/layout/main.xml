@@ -8,7 +8,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="vertical"
                   android:layout_width="fill_parent"
-                  android:layout_height="fill_parent">
+                  android:layout_height="fill_parent"
+                  android:background="@color/listBackground">
               
         <LinearLayout android:id="@+id/main.topLayout" 
                       android:layout_height="wrap_content" 
@@ -20,15 +21,15 @@
                       android:id="@+id/daisyLabel" 
                       android:textColor="#FFF" 
                       android:textStyle="bold" 
-                      android:padding="4px">
+                      android:padding="4dp">
             </TextView>
             <TextView android:layout_height="wrap_content" 
                       android:text="" 
                       android:gravity="right" 
                       android:layout_gravity="right" 
-                      android:layout_width="fill_parent" 
+                      android:layout_width="0dip" 
                       android:layout_weight="1" 
-                      android:padding="4px" 
+                      android:padding="4dp" 
                       android:textColor="#FFF" 
                       android:id="@+id/main.connectionStatus">
             </TextView>
@@ -37,16 +38,16 @@
                          android:id="@+id/main.connectionProgress" 
                          android:layout_width="wrap_content" 
                          android:visibility="invisible" 
-                         android:padding="4px">
+                         android:padding="4dp">
             </ProgressBar>
         </LinearLayout>
     
         <LinearLayout android:orientation="horizontal"
                       android:layout_width="fill_parent"
                       android:layout_height="100dp"
-                      android:layout_marginTop="20px"
-                      android:layout_marginLeft="20px"
-                      android:layout_marginRight="20px">
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp">
     
                 <Button android:text="Button" 
                         android:id="@+id/main.button1"  
@@ -86,9 +87,9 @@
         <LinearLayout android:orientation="horizontal"
                       android:layout_width="fill_parent"
                       android:layout_height="100dp"
-                      android:layout_marginTop="20px"
-                      android:layout_marginLeft="20px"
-                      android:layout_marginRight="20px">
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp">
     
                 <Button android:text="Button" 
                         android:id="@+id/main.button3"  
@@ -127,9 +128,9 @@
         <LinearLayout android:orientation="horizontal"
                       android:layout_width="fill_parent"
                       android:layout_height="100dp"
-                      android:layout_marginTop="20px"
-                      android:layout_marginLeft="20px"
-                      android:layout_marginRight="20px">
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp">
     
                 <Button android:text="Button" 
                         android:id="@+id/main.button5"  
@@ -150,11 +151,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
+    <LinearLayout android:id="@+id/bottomLayout"
+                  android:layout_alignParentBottom="true"
+                  android:layout_height="wrap_content"           
                   android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"                  
-                  android:layout_alignParentBottom="true" >
+                  android:background="@color/bottomLayoutBackground"
+                  android:orientation="vertical">
+        <Button android:layout_height="wrap_content"           
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="6dp"
+                android:textStyle="bold" 
+                android:id="@+id/configureButton"
+                android:text="@string/button.configure">
+        </Button>
     </LinearLayout>
     
 </RelativeLayout>

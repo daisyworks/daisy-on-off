@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/contentView"
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+                    
+    <LinearLayout android:id="@+id/topLayout"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:background="#999">
+              
+        <LinearLayout android:id="@+id/main.topLayout" 
+                      android:layout_height="wrap_content" 
+                      android:layout_width="fill_parent" 
+                      android:background="#999">
+            <TextView android:layout_height="wrap_content" 
+                      android:layout_width="wrap_content" 
+                      android:text="@string/configure_title" 
+                      android:id="@+id/daisyLabel" 
+                      android:textColor="#FFF" 
+                      android:textStyle="bold" 
+                      android:padding="4dp">
+            </TextView>
+        </LinearLayout>
+
+        <RelativeLayout android:id="@+id/buttonsParent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/listBackground">
+        </RelativeLayout>
+        
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/bottomLayout"
+                  android:layout_alignParentBottom="true"
+                  android:layout_height="wrap_content"           
+                  android:layout_width="fill_parent"
+                  android:background="@color/bottomLayoutBackground"
+                  android:orientation="vertical">
+        <Button android:layout_height="wrap_content"           
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="6dp"
+                android:textStyle="bold" 
+                android:id="@+id/doneButton"
+                android:text="@string/button.done">
+        </Button>
+    </LinearLayout>
+    
+    
+</RelativeLayout>

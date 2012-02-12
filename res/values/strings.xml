@@ -10,6 +10,8 @@
     <string name="prefs_which_daisy_dialog_title">Select Daisy</string>
     
     <string name="prefs_button_count_key">com.daisyworks.prefs.buttonCount</string>
+    <string name="prefs_button_ids_key">com.daisyworks.prefs.buttonIds</string>
+    
     <string name="prefs_button_count_title">Number of Buttons</string>
     <string name="prefs_button_count_summary">
       Select the number of buttons you wish to have available. This should correspond to the number of devices connected to your Daisy. 
@@ -68,4 +70,8 @@
 
     <string name="prefs.button.tag.id">com.daisyworks.prefs.tag.id</string>
                 
+    <string name="button.configure">Configure</string>
+    <string name="button.done">Done</string>
+    <string name="button.button">Button</string>
+    <string name="configure_title">Configure Daisy On/Off</string>
 </resources>
