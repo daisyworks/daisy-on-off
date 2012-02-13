@@ -12,4 +12,5 @@
     <color name="Scanning">#CC6</color>
     <color name="InRange">#696</color>
     <color name="NotInRange">#966</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="100dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginLeft="20dp"
+              android:layout_marginRight="20dp"
+              android:baselineAligned="false"              
+              >
+
+    <FrameLayout android:layout_width="0dp"
+                 android:layout_height="fill_parent"
+                 android:layout_weight="1"
+                 android:layout_gravity="center">
+
+        <Button android:id="@+id/main.button1" 
+                android:text="@string/button.button"                 
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"              
+                android:textStyle="bold"
+                android:layout_margin="4dp">        
+        </Button>
+  
+        <ImageButton android:id="@+id/main.removeButton1"
+                     android:src="@drawable/remove"   
+                     android:contentDescription="@string/button.remove"
+                     android:layout_width="33dp"
+                     android:layout_height="33dp"
+                     android:layout_gravity="bottom|right"
+                     android:textStyle="bold"
+                     android:background="@color/transparent">        
+        </ImageButton>      
+    </FrameLayout>
+
+    <FrameLayout android:layout_width="0dp"
+                 android:layout_height="fill_parent"
+                 android:layout_weight="1"
+                 android:layout_gravity="center">
+                 
+        <Button android:id="@+id/main.button2"
+                android:text="@string/button.button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"              
+                android:textStyle="bold"
+                android:layout_margin="4dp">        
+        </Button>
+  
+        <ImageButton android:id="@+id/main.removeButton2"
+                     android:src="@drawable/remove"   
+                     android:contentDescription="@string/button.remove"
+                     android:layout_width="33dp"
+                     android:layout_height="33dp"
+                     android:layout_gravity="bottom|right"
+                     android:textStyle="bold"
+                     android:background="@color/transparent">        
+        </ImageButton>      
+    </FrameLayout>
+            
+</LinearLayout>

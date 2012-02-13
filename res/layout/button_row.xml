@@ -5,7 +5,7 @@
               android:layout_height="100dp"
               android:layout_marginTop="20dp"
               android:layout_marginLeft="20dp"
-              android:layout_marginRight="20dp"
+              android:layout_marginRight="20dp"              
               xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Button android:text="@string/button.button" 
@@ -13,6 +13,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:textStyle="bold"
             android:layout_weight="1">
     </Button>
 
@@ -21,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"                    
             android:layout_gravity="center"
+            android:textStyle="bold"
             android:layout_weight="1">
     </ToggleButton>
 
@@ -29,6 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:textStyle="bold"
             android:layout_weight="1">
     </Button>
     
@@ -37,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"                    
             android:layout_gravity="center"
+            android:textStyle="bold"
             android:layout_weight="1">
     </ToggleButton>
         
