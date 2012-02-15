@@ -25,17 +25,18 @@ import com.daisyworks.android.bluetooth.R;
 
 public class ConfigurationActivity extends Activity implements OnClickListener
 {
-  @SuppressWarnings("unused")
   private static final String LOG_TAG = "DaisyOnOffConfig";
-  private static final Integer TYPE_ADD_BUTTON = 1;
   private static final Integer TYPE_CONFIG_BUTTON = 2;
   private static final Integer TYPE_REMOVE_BUTTON = 3;
 
   private static final int DIALOG_CONFIRM_REMOVE = 1;
+  private static final int DIALOG_BUTTON_TYPE = 2;
 
   private View selectedButton = null;
 
   private List<String> ids = new LinkedList<String>();
+
+  protected DaisyType newButtonDaisyType;
 
   @Override
   protected void onCreate (final Bundle savedInstanceState)
@@ -55,7 +56,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     final String buttonIdsStr = sharedPrefs.getString(getString(R.string.prefs_button_ids_key), null);
 
-    final String[] buttonIds = buttonIdsStr == null ? new String[0] : buttonIdsStr.split(",");
+    final String[] buttonIds = buttonIdsStr == null || buttonIdsStr.trim().length() == 0 ? new String[0] : buttonIdsStr.split(",");
 
     ids.addAll(Arrays.asList(buttonIds));
 
@@ -67,6 +68,9 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     Log.i(LOG_TAG, "Laying out with ids: " + ids);
 
     setContentView(R.layout.configure);
+
+    findViewById(R.id.doneButton).setOnClickListener(this);
+    findViewById(R.id.addButton).setOnClickListener(this);
 
     final ViewGroup buttonsParent = (ViewGroup) findViewById(R.id.buttonsParent);
     final LayoutInflater inflater = getLayoutInflater();
@@ -90,25 +94,27 @@ public class ConfigurationActivity extends Activity implements OnClickListener
       i++;
     }
 
-    if (ids.size() % 2 == 0)
+    if (i%2 != 0)
     {
-      buttonRow = newButtonRow(inflater, buttonsParent);
-      addAddButton(buttonRow, true);
-    }
-    else
-    {
-      addAddButton(buttonRow, false);
+      @SuppressWarnings("null")
+      final Button button2 = (Button)buttonRow.findViewById(R.id.main_button2);
+      button2.setVisibility(View.INVISIBLE);
+      final View removeButton2 = (View) button2.getTag(R.id.linkedButton);
+      removeButton2.setVisibility(View.INVISIBLE);
     }
   }
 
-  public void addAddButton(final ViewGroup buttonRow, final boolean first)
+  public void addButton(final ViewGroup buttonRow, final boolean first)
   {
     final Button button = (Button)buttonRow.findViewById(first ? R.id.main_button1 : R.id.main_button2);
-    button.setText("Add Button");
-    button.setTag(R.id.buttonType, TYPE_ADD_BUTTON);
+    button.setText("Configure");
 
-    final View removeButton = (View) button.getTag(R.id.linkedButton);
-    removeButton.setVisibility(View.GONE);
+    final String nextId = allocateNextId();
+    button.setTag(R.id.buttonId, nextId);
+    Log.i(LOG_TAG, "New button id set to '" + nextId + "', stored=" + button.getTag(R.id.buttonId) + " button: "  + button);
+
+    final View removeButton = (View)button.getTag(R.id.linkedButton);
+    removeButton.setVisibility(View.VISIBLE);
 
     if (first)
     {
@@ -120,6 +126,11 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     else
     {
       button.setVisibility(View.VISIBLE);
+    }
+
+    if (ids.size() == 6)
+    {
+      findViewById(R.id.addButton).setEnabled(false);
     }
   }
 
@@ -161,9 +172,13 @@ public class ConfigurationActivity extends Activity implements OnClickListener
   public void onClick(final View v)
   {
     final Object buttonType = v.getTag(R.id.buttonType);
-    if (buttonType == TYPE_ADD_BUTTON)
+    if (v.getId() == R.id.addButton)
     {
-      addButton((Button)v);
+      showDialog(DIALOG_BUTTON_TYPE);
+    }
+    else if (v.getId() == R.id.doneButton)
+    {
+      finish();
     }
     else if (buttonType == TYPE_CONFIG_BUTTON)
     {
@@ -184,30 +199,63 @@ public class ConfigurationActivity extends Activity implements OnClickListener
   {
     if (id == DIALOG_CONFIRM_REMOVE)
     {
-      AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-      builder.setPositiveButton("Remove", new DialogInterface.OnClickListener()
-      {
-
-        @Override
-        public void onClick(final DialogInterface dialog, final int which)
-        {
-          removeSelectedButton();
-        }
-      });
-
-      builder.setNegativeButton("Cancel", null);
-
-      builder.setTitle("Confirm Remove");
-      builder.setMessage("Remove this button?");
-      return builder.create();
+      return createConfirmRemoveDialog();
+    }
+    if (id == DIALOG_BUTTON_TYPE)
+    {
+      return createButtonTypeDialog();
     }
 
     return super.onCreateDialog(id);
   }
 
+  Dialog createConfirmRemoveDialog()
+  {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setPositiveButton("Remove", new DialogInterface.OnClickListener()
+    {
+      @Override public void onClick(final DialogInterface dialog, final int which)
+      {
+        removeSelectedButton();
+      }
+    });
+
+    builder.setNegativeButton("Cancel", null);
+    builder.setTitle("Confirm Remove");
+    builder.setMessage("Remove this button?");
+    return builder.create();
+  }
+
+  Dialog createButtonTypeDialog()
+  {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setPositiveButton("WIFI", new DialogInterface.OnClickListener()
+    {
+      @Override public void onClick(final DialogInterface dialog, final int which)
+      {
+        newButtonDaisyType = DaisyType.WIFI;
+        addButton();
+      }
+    });
+
+    builder.setNeutralButton("Bluetooth", new DialogInterface.OnClickListener()
+    {
+      @Override public void onClick(final DialogInterface dialog, final int which)
+      {
+        newButtonDaisyType = DaisyType.BLUETOOTH;
+        addButton();
+      }
+    });
+
+    builder.setNegativeButton("Cancel", null);
+    builder.setTitle("Select Type");
+    builder.setMessage("Will this button work with a Bluetooth Daisy or WiFi Daisy?");
+    return builder.create();
+  }
+
   void removeSelectedButton()
   {
+    int oldSize = ids.size();
     final View button = (View) selectedButton.getTag(R.id.linkedButton);
     final String buttonId = (String)button.getTag(R.id.buttonId);
     Log.i(LOG_TAG, "Contains id '" + buttonId + "' " + ids.contains(buttonId));
@@ -216,6 +264,11 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     storeIds();
 
     redoLayout();
+
+    if (oldSize == 6)
+    {
+      findViewById(R.id.addButton).setEnabled(true);
+    }
   }
 
   protected void storeIds()
@@ -243,28 +296,30 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     Log.i(LOG_TAG, "Stored ids: " + idsString);
   }
 
-  private void addButton(final Button addButton)
+  private void addButton()
   {
     final ViewGroup buttonsParent = (ViewGroup) findViewById(R.id.buttonsParent);
-    if (addButton.getId() == R.id.main_button1)
-    {
-      addAddButton((ViewGroup) addButton.getParent().getParent(), false);
-    }
-    else if (buttonsParent.getChildCount() < 3)
+
+    int numPanels = buttonsParent.getChildCount();
+
+    if (numPanels == 0)
     {
       final ViewGroup buttonRow = newButtonRow(getLayoutInflater(), buttonsParent);
-      addAddButton(buttonRow, true);
+      addButton(buttonRow, true);
     }
-
-    addButton.setText("Configure");
-    addButton.setTag(R.id.buttonType, TYPE_CONFIG_BUTTON);
-
-    final String nextId = allocateNextId();
-    addButton.setTag(R.id.buttonId, nextId);
-    Log.i(LOG_TAG, "New button id set to '" + nextId + "', stored=" + addButton.getTag(R.id.buttonId) + " button: "  + addButton);
-
-    final View removeButton = (View) addButton.getTag(R.id.linkedButton);
-    removeButton.setVisibility(View.VISIBLE);
+    else
+    {
+      final ViewGroup buttonPanel = (ViewGroup) buttonsParent.getChildAt(numPanels - 1);
+      if ( buttonPanel.findViewById(R.id.main_button2).getVisibility() != View.VISIBLE)
+      {
+        addButton(buttonPanel, false);
+      }
+      else if (numPanels < 3)
+      {
+        final ViewGroup buttonRow = newButtonRow(getLayoutInflater(), buttonsParent);
+        addButton(buttonRow, true);
+      }
+    }
   }
 
   protected String allocateNextId()

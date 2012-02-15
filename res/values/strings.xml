@@ -71,8 +71,9 @@
     <string name="prefs.button.tag.id">com.daisyworks.prefs.tag.id</string>
                 
     <string name="button.configure">Configure</string>
-    <string name="button.done">Done</string>
+    <string name="button.done">  Done  </string>
     <string name="button.button">Button</string>
     <string name="button.remove">Remove</string>
+    <string name="button.addButton">Add Button</string>
     <string name="configure_title">Configure Daisy On/Off</string>
 </resources>

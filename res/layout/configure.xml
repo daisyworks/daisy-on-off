@@ -41,15 +41,34 @@
                   android:layout_height="wrap_content"           
                   android:layout_width="fill_parent"
                   android:background="@color/bottomLayoutBackground"
-                  android:orientation="vertical">
+                  android:orientation="horizontal">
+                
         <Button android:layout_height="wrap_content"           
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
                 android:textStyle="bold" 
                 android:id="@+id/doneButton"
                 android:text="@string/button.done">
         </Button>
+        
+        <Button android:layout_height="wrap_content"           
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
+                android:textStyle="bold" 
+                android:id="@+id/addButton"
+                android:text="@string/button.addButton">
+        </Button>
+        
     </LinearLayout>
     
     
