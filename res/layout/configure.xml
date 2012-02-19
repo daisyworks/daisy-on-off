@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:id="@+id/contentView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent" 
-                android:layout_height="fill_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-                    
+                android:layout_height="fill_parent">
+
     <LinearLayout android:id="@+id/topLayout"
                   android:orientation="vertical"
                   android:layout_width="fill_parent"
@@ -18,7 +17,7 @@
                       android:background="#999">
             <TextView android:layout_height="wrap_content" 
                       android:layout_width="wrap_content" 
-                      android:text="@string/configure_title" 
+                      android:text="@string/title.configure" 
                       android:id="@+id/daisyLabel" 
                       android:textColor="#FFF" 
                       android:textStyle="bold" 

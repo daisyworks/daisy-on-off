@@ -1,18 +1,13 @@
 package com.daisyworks.btcontrol;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +29,12 @@ public class ConfigurationActivity extends Activity implements OnClickListener
 
   private View selectedButton = null;
 
-  private List<String> ids = new LinkedList<String>();
+  private List<String> ids = null;
 
-  protected DaisyType newButtonDaisyType;
+  protected ButtonTargetType newButtonDaisyType;
 
   @Override
-  protected void onCreate (final Bundle savedInstanceState)
+  protected void onCreate(final Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -52,17 +47,11 @@ public class ConfigurationActivity extends Activity implements OnClickListener
   protected void onResume()
   {
     super.onResume();
-
-    final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    final String buttonIdsStr = sharedPrefs.getString(getString(R.string.prefs_button_ids_key), null);
-
-    final String[] buttonIds = buttonIdsStr == null || buttonIdsStr.trim().length() == 0 ? new String[0] : buttonIdsStr.split(",");
-
-    ids.addAll(Arrays.asList(buttonIds));
-
+    ids = Config.loadIds(this);
     redoLayout();
   }
 
+  @SuppressWarnings("null")
   protected void redoLayout()
   {
     Log.i(LOG_TAG, "Laying out with ids: " + ids);
@@ -79,58 +68,31 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     int i = 0;
     for (final String buttonId : ids)
     {
+      Button button = null;
       if (i % 2 == 0)
       {
         buttonRow = newButtonRow(inflater, buttonsParent);
-        final View button = buttonRow.findViewById(R.id.main_button1);
-        button.setTag(R.id.buttonId, buttonId);
+        button = (Button) buttonRow.findViewById(R.id.main_button1);
       }
       else
       {
-        @SuppressWarnings("null")
-        final View button = buttonRow.findViewById(R.id.main_button2);
-        button.setTag(R.id.buttonId, buttonId);
+        button = ((Button)buttonRow.findViewById(R.id.main_button2));
       }
+
+      button.setTag(R.id.buttonId, buttonId);
+      ButtonAttributes buttonAttr = Config.loadButton(this, Integer.valueOf(buttonId));
+      final String label = button.getText() + "\n" + buttonAttr.getLabel();
+      button.setText(label);
+
       i++;
     }
 
-    if (i%2 != 0)
-    {
-      @SuppressWarnings("null")
-      final Button button2 = (Button)buttonRow.findViewById(R.id.main_button2);
-      button2.setVisibility(View.INVISIBLE);
-      final View removeButton2 = (View) button2.getTag(R.id.linkedButton);
-      removeButton2.setVisibility(View.INVISIBLE);
-    }
-  }
-
-  public void addButton(final ViewGroup buttonRow, final boolean first)
-  {
-    final Button button = (Button)buttonRow.findViewById(first ? R.id.main_button1 : R.id.main_button2);
-    button.setText("Configure");
-
-    final String nextId = allocateNextId();
-    button.setTag(R.id.buttonId, nextId);
-    Log.i(LOG_TAG, "New button id set to '" + nextId + "', stored=" + button.getTag(R.id.buttonId) + " button: "  + button);
-
-    final View removeButton = (View)button.getTag(R.id.linkedButton);
-    removeButton.setVisibility(View.VISIBLE);
-
-    if (first)
+    if (i % 2 != 0)
     {
       final Button button2 = (Button)buttonRow.findViewById(R.id.main_button2);
       button2.setVisibility(View.INVISIBLE);
       final View removeButton2 = (View) button2.getTag(R.id.linkedButton);
       removeButton2.setVisibility(View.INVISIBLE);
-    }
-    else
-    {
-      button.setVisibility(View.VISIBLE);
-    }
-
-    if (ids.size() == 6)
-    {
-      findViewById(R.id.addButton).setEnabled(false);
     }
   }
 
@@ -182,7 +144,9 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     }
     else if (buttonType == TYPE_CONFIG_BUTTON)
     {
-
+      final Intent intent = new Intent(this, ConfigureBluetoothButtonActivity.class);
+      intent.putExtra("buttonId", Integer.parseInt((String)v.getTag(R.id.buttonId)));
+      startActivity(intent);
     }
     else if (buttonType == TYPE_REMOVE_BUTTON)
     {
@@ -233,8 +197,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     {
       @Override public void onClick(final DialogInterface dialog, final int which)
       {
-        newButtonDaisyType = DaisyType.WIFI;
-        addButton();
+        newButtonDaisyType = ButtonTargetType.WIFI;
       }
     });
 
@@ -242,8 +205,9 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     {
       @Override public void onClick(final DialogInterface dialog, final int which)
       {
-        newButtonDaisyType = DaisyType.BLUETOOTH;
-        addButton();
+        newButtonDaisyType = ButtonTargetType.BLUETOOTH;
+        final Intent intent = new Intent(ConfigurationActivity.this, ConfigureBluetoothButtonActivity.class);
+        startActivity(intent);
       }
     });
 
@@ -261,7 +225,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     Log.i(LOG_TAG, "Contains id '" + buttonId + "' " + ids.contains(buttonId));
     ids.remove(buttonId);
 
-    storeIds();
+    Config.storeIds(this, ids);
 
     redoLayout();
 
@@ -269,70 +233,5 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     {
       findViewById(R.id.addButton).setEnabled(true);
     }
-  }
-
-  protected void storeIds()
-  {
-    final StringBuilder buf = new StringBuilder();
-    final Iterator<String> iter = ids.iterator();
-
-    if (iter.hasNext())
-    {
-      buf.append(iter.next());
-    }
-    while(iter.hasNext())
-    {
-      buf.append(",");
-      buf.append(iter.next());
-    }
-
-    final String idsString = buf.toString();
-
-    final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    final Editor editor = sharedPrefs.edit();
-    editor.putString(getString(R.string.prefs_button_ids_key), idsString);
-    editor.commit();
-
-    Log.i(LOG_TAG, "Stored ids: " + idsString);
-  }
-
-  private void addButton()
-  {
-    final ViewGroup buttonsParent = (ViewGroup) findViewById(R.id.buttonsParent);
-
-    int numPanels = buttonsParent.getChildCount();
-
-    if (numPanels == 0)
-    {
-      final ViewGroup buttonRow = newButtonRow(getLayoutInflater(), buttonsParent);
-      addButton(buttonRow, true);
-    }
-    else
-    {
-      final ViewGroup buttonPanel = (ViewGroup) buttonsParent.getChildAt(numPanels - 1);
-      if ( buttonPanel.findViewById(R.id.main_button2).getVisibility() != View.VISIBLE)
-      {
-        addButton(buttonPanel, false);
-      }
-      else if (numPanels < 3)
-      {
-        final ViewGroup buttonRow = newButtonRow(getLayoutInflater(), buttonsParent);
-        addButton(buttonRow, true);
-      }
-    }
-  }
-
-  protected String allocateNextId()
-  {
-    int id = 1;
-    while (ids.contains(String.valueOf(id)))
-    {
-      id++;
-    }
-
-    final String nextId = String.valueOf(id);
-    ids.add(nextId);
-    storeIds();
-    return nextId;
   }
 }

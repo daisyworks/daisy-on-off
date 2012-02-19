@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/contentView"
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+                    
+    <LinearLayout android:id="@+id/topLayout"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:background="#999"
+                  android:baselineAligned="false"
+                  android:layout_above="@id/bottomLayout">
+              
+        <LinearLayout android:id="@+id/main.topLayout" 
+                      android:layout_height="wrap_content" 
+                      android:layout_width="fill_parent" 
+                      android:background="#999">
+            <TextView android:layout_height="wrap_content" 
+                      android:layout_width="wrap_content" 
+                      android:text="@string/title.new_bt_button" 
+                      android:id="@+id/daisyLabel" 
+                      android:textColor="#FFF" 
+                      android:textStyle="bold" 
+                      android:padding="4dp">
+            </TextView>
+        </LinearLayout>
+
+        <ScrollView android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/listBackground">
+            
+            <LinearLayout android:id="@+id/buttonsParent"
+                          android:orientation="vertical"
+                          android:layout_width="fill_parent"
+                          android:layout_height="0dip"
+                          android:background="@color/listBackground"
+                          android:padding="8dp">
+    
+                <TextView android:layout_height="wrap_content" 
+                          android:layout_width="wrap_content" 
+                          android:text="@string/label.button_label"  
+                          android:textColor="#FFF" 
+                          android:textStyle="bold" 
+                          android:paddingBottom="2dp"
+                          android:paddingLeft="4dp"
+                          android:paddingRight="4dp"
+                          android:paddingTop="12dp">
+                </TextView>
+                
+                <EditText android:id="@+id/buttonLabelInput"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="textCapWords" >
+                    <requestFocus/>
+                </EditText>
+    
+                <TextView android:layout_height="wrap_content" 
+                          android:layout_width="wrap_content" 
+                          android:text="@string/label.daisy"  
+                          android:textColor="#FFF" 
+                          android:textStyle="bold" 
+                          android:paddingBottom="2dp"
+                          android:paddingLeft="4dp"
+                          android:paddingRight="4dp"
+                          android:paddingTop="12dp">
+                </TextView>
+                
+                <Spinner android:id="@+id/daisyInput"
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"/>
+    
+                <TextView android:layout_height="wrap_content" 
+                          android:layout_width="wrap_content" 
+                          android:text="@string/label.pin"  
+                          android:textColor="#FFF" 
+                          android:textStyle="bold" 
+                          android:paddingBottom="2dp"
+                          android:paddingLeft="4dp"
+                          android:paddingRight="4dp"
+                          android:paddingTop="12dp">
+                </TextView>
+                
+                <Spinner
+                    android:id="@+id/pinInput"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+    
+                <TextView android:layout_height="wrap_content" 
+                          android:layout_width="wrap_content" 
+                          android:text="@string/label.button_type"  
+                          android:textColor="#FFF" 
+                          android:textStyle="bold" 
+                          android:paddingBottom="2dp"
+                          android:paddingLeft="4dp"
+                          android:paddingRight="4dp"
+                          android:paddingTop="12dp">
+                </TextView>
+                
+                <Spinner android:id="@+id/buttonTypeInput"
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content" />
+                
+            </LinearLayout>
+        </ScrollView>
+        
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/bottomLayout"
+                  android:layout_alignParentBottom="true"
+                  android:layout_height="wrap_content"           
+                  android:layout_width="fill_parent"
+                  android:background="@color/bottomLayoutBackground"
+                  android:orientation="horizontal">
+                
+        <Button android:layout_height="wrap_content"           
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
+                android:textStyle="bold" 
+                android:id="@+id/cancelButton"
+                android:text="@string/button.cancel">
+        </Button>
+        
+        <Button android:layout_height="wrap_content"           
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
+                android:textStyle="bold" 
+                android:id="@+id/saveButton"
+                android:text="@string/button.save">
+        </Button>
+        
+    </LinearLayout>
+        
+</RelativeLayout>

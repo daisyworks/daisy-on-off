@@ -20,43 +20,23 @@
 package com.daisyworks.btcontrol;
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 public class ButtonAttributes
 {
   private static int[] PHYSICAL_PINS = {3,6,7,10,11};
 
-  private static final String CURRENT_POWER_STATE = "com.daisyworks.prefs.powerOn";
-
   private final SharedPreferences prefs;
 
   private final int buttonId;
-  private final int toggleButtonId;
-  private final int buttonNumber;
   private final String label;
   private final ButtonBehavior behavior;
   private final int pin;
   private final String deviceId;
   private boolean powerOn;
 
-  public static ButtonAttributes newInstance(final SharedPreferences sharedPrefs, final int buttonId, final int toggleButtonId, final int buttonNumber, final String defaultDeviceId)
-  {
-    final String label = sharedPrefs.getString("com.daisyworks.prefs.buttonLabel" + buttonNumber, "Button");
-    final String pinString = sharedPrefs.getString("com.daisyworks.prefs.buttonPin" + buttonNumber, "0");
-    final String behaviorString = sharedPrefs.getString("com.daisyworks.prefs.buttonType" + buttonNumber, "ON_OFF");
-    final String deviceId = sharedPrefs.getString("com.daisyworks.prefs.button" + buttonNumber + "WhichDaisy", defaultDeviceId);
-    final boolean powerOn = sharedPrefs.getBoolean(CURRENT_POWER_STATE + buttonNumber, false);
-
-    final int pin = Integer.valueOf(pinString);
-    final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
-
-    return new ButtonAttributes(sharedPrefs, buttonId, toggleButtonId, buttonNumber, label, behavior, pin, deviceId, powerOn);
-  }
 
   public ButtonAttributes (final SharedPreferences prefs,
                            final int buttonId,
-                           final int toggleButtonId,
-                           final int buttonNumber,
                            final String label,
                            final ButtonBehavior behavior,
                            final int pin,
@@ -65,8 +45,6 @@ public class ButtonAttributes
   {
     this.prefs = prefs;
     this.buttonId = buttonId;
-    this.toggleButtonId = toggleButtonId;
-    this.buttonNumber = buttonNumber;
     this.label = label;
     this.behavior = behavior;
     this.pin = Math.min(Math.max(pin,0), 4); // ensure pin is between 0 and 4
@@ -77,16 +55,6 @@ public class ButtonAttributes
   public int getButtonId ()
   {
     return buttonId;
-  }
-
-  public int getToggleButtonId ()
-  {
-    return toggleButtonId;
-  }
-
-  public int getButtonNumber ()
-  {
-    return buttonNumber;
   }
 
   public String getLabel ()
@@ -122,9 +90,11 @@ public class ButtonAttributes
   public void setPowerOn (final boolean powerOn)
   {
     this.powerOn = powerOn;
+    save();
+  }
 
-    final Editor editor = prefs.edit();
-    editor.putBoolean(CURRENT_POWER_STATE + buttonNumber, powerOn);
-    editor.commit();
+  public void save()
+  {
+    Config.saveButton(prefs, this);
   }
 }

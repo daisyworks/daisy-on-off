@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol;
+package com.daisyworks.btcontrol.action;
 
 import java.io.IOException;
 
@@ -27,6 +27,8 @@ import android.util.Log;
 import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
+import com.daisyworks.btcontrol.ButtonState;
+import com.daisyworks.btcontrol.DaisyOnOffActivity;
 
 public class SetupAction extends BaseBluetoothAction
 {
@@ -81,6 +83,6 @@ public class SetupAction extends BaseBluetoothAction
     long totalTime = System.currentTimeMillis() - startTime;
     Log.i(BTCommThread.LOG_TAG, "SetupAction: took " + totalTime + "ms");
 
-    handler.obtainMessage(BluetoothControlActivity.BUTTON_STATE_MESSAGE, new ButtonState(gpioMask, pioMask)).sendToTarget();
+    handler.obtainMessage(DaisyOnOffActivity.BUTTON_STATE_MESSAGE, new ButtonState(gpioMask, pioMask)).sendToTarget();
   }
 }

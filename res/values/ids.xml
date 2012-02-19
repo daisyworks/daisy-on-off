@@ -3,4 +3,5 @@
     <item type="id" name="buttonType" />
     <item type="id" name="linkedButton" />
     <item type="id" name="buttonId" />
+    <item type="id" name="buttonAttributes" />
 </resources>

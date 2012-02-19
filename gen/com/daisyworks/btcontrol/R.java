@@ -34,44 +34,46 @@ public final class R {
         public static final int remove=0x7f020001;
     }
     public static final class id {
-        public static final int addButton=0x7f080010;
-        public static final int bottomLayout=0x7f08000e;
+        public static final int addButton=0x7f080012;
+        public static final int bottomLayout=0x7f080010;
+        public static final int buttonAttributes=0x7f080003;
         public static final int buttonId=0x7f080002;
+        public static final int buttonLabelInput=0x7f080014;
         public static final int buttonType=0x7f080000;
-        public static final int buttonsParent=0x7f08000d;
-        public static final int configureButton=0x7f08001b;
-        public static final int contentView=0x7f080009;
-        public static final int daisyLabel=0x7f08000c;
-        public static final int deviceListLayout=0x7f080012;
-        public static final int doneButton=0x7f08000f;
-        public static final int help_webview=0x7f080011;
+        public static final int buttonTypeInput=0x7f080017;
+        public static final int buttonsParent=0x7f08000f;
+        public static final int cancelButton=0x7f080018;
+        public static final int configureButton=0x7f08001d;
+        public static final int contentView=0x7f080013;
+        public static final int daisyInput=0x7f080015;
+        public static final int daisyLabel=0x7f08000e;
+        public static final int doneButton=0x7f080011;
+        public static final int help_webview=0x7f08001a;
         public static final int linkedButton=0x7f080001;
-        public static final int main_button1=0x7f080003;
-        public static final int main_button2=0x7f080005;
-        public static final int main_button3=0x7f080015;
-        public static final int main_button4=0x7f080017;
-        public static final int main_button5=0x7f080019;
-        public static final int main_connectionProgress=0x7f080014;
-        public static final int main_connectionStatus=0x7f080013;
-        public static final int main_removeButton1=0x7f080007;
-        public static final int main_removeButton2=0x7f080008;
-        public static final int main_toggleButton1=0x7f080004;
-        public static final int main_toggleButton2=0x7f080006;
-        public static final int main_toggleButton3=0x7f080016;
-        public static final int main_toggleButton4=0x7f080018;
-        public static final int main_toggleButton5=0x7f08001a;
-        public static final int main_topLayout=0x7f08000b;
-        public static final int menu_help=0x7f08001d;
-        public static final int menu_settings=0x7f08001c;
-        public static final int topLayout=0x7f08000a;
+        public static final int main_button1=0x7f080008;
+        public static final int main_button2=0x7f08000a;
+        public static final int main_connectionProgress=0x7f08001c;
+        public static final int main_connectionStatus=0x7f08001b;
+        public static final int main_pushButton1=0x7f080004;
+        public static final int main_pushButton2=0x7f080006;
+        public static final int main_removeButton1=0x7f080009;
+        public static final int main_removeButton2=0x7f08000b;
+        public static final int main_toggleButton1=0x7f080005;
+        public static final int main_toggleButton2=0x7f080007;
+        public static final int main_topLayout=0x7f08000d;
+        public static final int menu_help=0x7f08001e;
+        public static final int pinInput=0x7f080016;
+        public static final int saveButton=0x7f080019;
+        public static final int topLayout=0x7f08000c;
     }
     public static final class layout {
         public static final int button_row=0x7f030000;
         public static final int config_button_row=0x7f030001;
         public static final int configure=0x7f030002;
-        public static final int help=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int menu=0x7f030005;
+        public static final int configure_bt_button=0x7f030003;
+        public static final int help=0x7f030004;
+        public static final int main=0x7f030005;
+        public static final int menu=0x7f030006;
     }
     public static final class string {
         public static final int app_name=0x7f050012;
@@ -89,14 +91,19 @@ public final class R {
         public static final int bluetooth_unexpected_error=0x7f05000c;
         public static final int button_addButton=0x7f050044;
         public static final int button_button=0x7f050042;
+        public static final int button_cancel=0x7f050046;
         public static final int button_cancel_scan=0x7f050008;
         public static final int button_configure=0x7f050040;
         public static final int button_done=0x7f050041;
         public static final int button_remove=0x7f050043;
+        public static final int button_save=0x7f050045;
         public static final int button_scan=0x7f050007;
-        public static final int configure_title=0x7f050045;
         public static final int edit=0x7f050005;
         public static final int help=0x7f050001;
+        public static final int label_button_label=0x7f05004a;
+        public static final int label_button_type=0x7f05004d;
+        public static final int label_daisy=0x7f05004b;
+        public static final int label_pin=0x7f05004c;
         public static final int no=0x7f050004;
         public static final int ok=0x7f050002;
         public static final int prefs_button_tag_id=0x7f05003f;
@@ -145,6 +152,9 @@ public final class R {
         public static final int prefs_which_daisy_summary=0x7f050015;
         public static final int prefs_which_daisy_title=0x7f050014;
         public static final int settings=0x7f050000;
+        public static final int title_configure=0x7f050048;
+        public static final int title_main=0x7f050047;
+        public static final int title_new_bt_button=0x7f050049;
         public static final int yes=0x7f050003;
     }
     public static final class xml {

@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol;
+package com.daisyworks.btcontrol.action;
 
 import java.io.IOException;
 
@@ -28,19 +28,34 @@ import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
 
-public class SendOnOffAction extends BaseBluetoothAction
+public class SendPulseAction extends BaseBluetoothAction
 {
-  private final String cmd;
+  private final String cmdOn;
+  private final String cmdOff;
 
-  public SendOnOffAction (final String cmd)
+  public SendPulseAction (final String cmdOn, final String cmdOff)
   {
-    this.cmd = cmd;
+    this.cmdOn = cmdOn;
+    this.cmdOff = cmdOff;
   }
 
   @Override
   protected void performIOAction (final AsyncReader reader, final Handler handler) throws IOException
   {
-    writeln(cmd);
-    Log.i(BTCommThread.LOG_TAG, "Read: " + reader.readLine(500));
+    writeln(cmdOn);
+    Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
+
+    try
+    {
+      Thread.sleep(1000);
+    }
+    catch(InterruptedException ie)
+    {
+      Thread.interrupted();
+    }
+
+    writeln(cmdOff);
+    Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
   }
+
 }

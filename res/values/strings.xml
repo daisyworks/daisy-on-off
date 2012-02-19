@@ -75,5 +75,15 @@
     <string name="button.button">Button</string>
     <string name="button.remove">Remove</string>
     <string name="button.addButton">Add Button</string>
-    <string name="configure_title">Configure Daisy On/Off</string>
+    <string name="button.save">Save</string>
+    <string name="button.cancel">Cancel</string>
+    
+    <string name="title.main">Daisy On/Off</string>
+    <string name="title.configure">Configure Daisy On/Off</string>
+    <string name="title.new_bt_button">New Bluetooth Button</string>
+    
+    <string name="label.button_label">Button Label</string>
+    <string name="label.daisy">Target Daisy</string>
+    <string name="label.pin">Target Pin</string>
+    <string name="label.button_type">Button Behavior</string>
 </resources>
