@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:id="@+id/contentView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent" 
-                android:layout_height="fill_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                android:layout_height="fill_parent">
                     
     <LinearLayout android:id="@+id/topLayout"
                   android:orientation="vertical"
@@ -19,7 +18,7 @@
                       android:background="#999">
             <TextView android:layout_height="wrap_content" 
                       android:layout_width="wrap_content" 
-                      android:text="@string/title.config_bt_button" 
+                      android:text="@string/title.config_wifi_button" 
                       android:id="@+id/daisyLabel" 
                       android:textColor="#FFF" 
                       android:textStyle="bold" 
@@ -55,7 +54,24 @@
                           android:inputType="textCapWords" >
                     <requestFocus/>
                 </EditText>
-    
+
+                <TextView android:layout_height="wrap_content" 
+                          android:layout_width="wrap_content" 
+                          android:text="@string/label.server"  
+                          android:textColor="#FFF" 
+                          android:textStyle="bold" 
+                          android:paddingBottom="2dp"
+                          android:paddingLeft="4dp"
+                          android:paddingRight="4dp"
+                          android:paddingTop="12dp">
+                </TextView>
+                
+                <EditText android:id="@+id/serverInput"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="text">
+                </EditText>
+                
                 <TextView android:layout_height="wrap_content" 
                           android:layout_width="wrap_content" 
                           android:text="@string/label.daisy"  
@@ -67,9 +83,11 @@
                           android:paddingTop="12dp">
                 </TextView>
                 
-                <Spinner android:id="@+id/daisyInput"
-                         android:layout_width="fill_parent"
-                         android:layout_height="wrap_content"/>
+                <EditText android:id="@+id/daisyInput"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="text">
+                </EditText>
     
                 <TextView android:layout_height="wrap_content" 
                           android:layout_width="wrap_content" 
@@ -82,9 +100,10 @@
                           android:paddingTop="12dp">
                 </TextView>
                 
-                <Spinner android:id="@+id/pinInput"
-                         android:layout_width="fill_parent"
-                         android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/pinInput"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
     
                 <TextView android:layout_height="wrap_content" 
                           android:layout_width="wrap_content" 

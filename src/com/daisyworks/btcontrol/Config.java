@@ -20,6 +20,7 @@ public class Config
   private static final String BUTTON_PREFIX = PREFS_PREFIX + "button.";
   private static final String IDS_KEY = PREFS_PREFIX + "button_ids";
 
+  private static final String PREF_TARGET_TYPE = ".target_type";
   private static final String PREF_LABEL = ".label";
   private static final String PREF_DEVICE_ID = ".device_id";
   private static final String PREF_PIN = ".pin";
@@ -122,6 +123,7 @@ public class Config
   {
     final int buttonId = button.getButtonId();
     final Editor editor = prefs.edit();
+    editor.putString(key(buttonId, PREF_TARGET_TYPE), button.getTargetType().name());
     editor.putString(key(buttonId, PREF_LABEL), button.getLabel());
     editor.putString(key(buttonId, PREF_DEVICE_ID), button.getDeviceId());
     editor.putInt(key(buttonId, PREF_PIN), button.getPin());
@@ -157,12 +159,14 @@ public class Config
     final String deviceId = sharedPrefs.getString(key(buttonId, PREF_DEVICE_ID), null);
     final int pin = sharedPrefs.getInt(key(buttonId, PREF_PIN), 0);
     final String behaviorString = sharedPrefs.getString(key(buttonId, PREF_TYPE), ButtonBehavior.ON_OFF.name());
+    final String targetTypeString = sharedPrefs.getString(key(buttonId, PREF_TARGET_TYPE), ButtonTargetType.BLUETOOTH.name());
 
     final boolean powerOn = sharedPrefs.getBoolean(key(buttonId, PREF_POWER_ON), false);
 
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
+    final ButtonTargetType targetType = Enum.valueOf(ButtonTargetType.class, targetTypeString);
 
-    return new ButtonAttributes(sharedPrefs, buttonId, label, behavior, pin, deviceId, powerOn);
+    return new ButtonAttributes(sharedPrefs, targetType, buttonId, label, behavior, pin, deviceId, powerOn);
   }
 
   private static ButtonAttributes loadV1V2(final SharedPreferences sharedPrefs, final int buttonId)
@@ -178,7 +182,14 @@ public class Config
     final int pin = Integer.valueOf(pinString);
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
 
-    final ButtonAttributes attr = new ButtonAttributes(sharedPrefs, buttonId, label, behavior, pin, deviceId, powerOn);
+    final ButtonAttributes attr = new ButtonAttributes(sharedPrefs,
+                                                       ButtonTargetType.BLUETOOTH,
+                                                       buttonId,
+                                                       label,
+                                                       behavior,
+                                                       pin,
+                                                       deviceId,
+                                                       powerOn);
 
     return attr;
   }

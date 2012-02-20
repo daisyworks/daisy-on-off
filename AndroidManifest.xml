@@ -7,16 +7,21 @@
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="com.daisyworks.android.bluetooth.BluetoothApplication">
+    <application android:icon="@drawable/icon" 
+                 android:label="@string/title.main" 
+                 android:name="com.daisyworks.android.bluetooth.BluetoothApplication">
+                 
         <activity android:name=".DaisyOnOffActivity"
-                  android:label="@string/app_name" android:screenOrientation="portrait">
+                  android:label="@string/title.main" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity android:name="ConfigurationActivity"></activity>
         <activity android:name="ConfigureBluetoothButtonActivity"></activity>
+        <activity android:name="ConfigureWifiButtonActivity"></activity>
         <activity android:name="com.daisyworks.android.HelpActivity"></activity>
 
     </application>

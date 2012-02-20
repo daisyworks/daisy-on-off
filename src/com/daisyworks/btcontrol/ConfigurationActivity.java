@@ -31,8 +31,6 @@ public class ConfigurationActivity extends Activity implements OnClickListener
 
   private List<String> ids = null;
 
-  protected ButtonTargetType newButtonDaisyType;
-
   @Override
   protected void onCreate(final Bundle savedInstanceState)
   {
@@ -79,10 +77,11 @@ public class ConfigurationActivity extends Activity implements OnClickListener
         button = ((Button)buttonRow.findViewById(R.id.main_button2));
       }
 
-      button.setTag(R.id.buttonId, buttonId);
       ButtonAttributes buttonAttr = Config.loadButton(this, Integer.valueOf(buttonId));
       final String label = button.getText() + "\n" + buttonAttr.getLabel();
       button.setText(label);
+      button.setTag(R.id.buttonId, buttonId);
+      button.setTag(R.id.buttonAttributes, buttonAttr);
 
       i++;
     }
@@ -144,7 +143,8 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     }
     else if (buttonType == TYPE_CONFIG_BUTTON)
     {
-      final Intent intent = new Intent(this, ConfigureBluetoothButtonActivity.class);
+      final ButtonAttributes buttonAttr = (ButtonAttributes) v.getTag(R.id.buttonAttributes);
+      final Intent intent = new Intent(this, buttonAttr.getTargetType().getConfigurationActivity());
       intent.putExtra("buttonId", Integer.parseInt((String)v.getTag(R.id.buttonId)));
       startActivity(intent);
     }
@@ -197,7 +197,8 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     {
       @Override public void onClick(final DialogInterface dialog, final int which)
       {
-        newButtonDaisyType = ButtonTargetType.WIFI;
+        final Intent intent = new Intent(ConfigurationActivity.this, ConfigureWifiButtonActivity.class);
+        startActivity(intent);
       }
     });
 
@@ -205,7 +206,6 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     {
       @Override public void onClick(final DialogInterface dialog, final int which)
       {
-        newButtonDaisyType = ButtonTargetType.BLUETOOTH;
         final Intent intent = new Intent(ConfigurationActivity.this, ConfigureBluetoothButtonActivity.class);
         startActivity(intent);
       }

@@ -27,6 +27,7 @@ public class ButtonAttributes
 
   private final SharedPreferences prefs;
 
+  private final ButtonTargetType targetType;
   private final int buttonId;
   private final String label;
   private final ButtonBehavior behavior;
@@ -34,8 +35,8 @@ public class ButtonAttributes
   private final String deviceId;
   private boolean powerOn;
 
-
   public ButtonAttributes (final SharedPreferences prefs,
+                           final ButtonTargetType targetType,
                            final int buttonId,
                            final String label,
                            final ButtonBehavior behavior,
@@ -44,12 +45,18 @@ public class ButtonAttributes
                            final boolean powerOn)
   {
     this.prefs = prefs;
+    this.targetType = targetType;
     this.buttonId = buttonId;
     this.label = label;
     this.behavior = behavior;
     this.pin = Math.min(Math.max(pin,0), 4); // ensure pin is between 0 and 4
     this.deviceId = deviceId;
     this.powerOn = powerOn;
+  }
+
+  public ButtonTargetType getTargetType()
+  {
+    return targetType;
   }
 
   public int getButtonId ()

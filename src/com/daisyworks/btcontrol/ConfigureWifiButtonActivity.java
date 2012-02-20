@@ -1,28 +1,21 @@
 package com.daisyworks.btcontrol;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.daisyworks.android.widget.AbstractTextWatcher;
 import com.daisyworks.android.widget.ListEntry;
 
-public class ConfigureBluetoothButtonActivity extends Activity implements OnClickListener
+public class ConfigureWifiButtonActivity extends Activity implements OnClickListener
 {
   private int buttonId = 0;
   private boolean powerOn = false;
@@ -35,7 +28,7 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
   {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
-    setContentView(R.layout.configure_bt_button);
+    setContentView(R.layout.configure_wifi_button);
   }
 
   /**
@@ -46,24 +39,13 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
   {
     super.onResume();
 
-    final Set<BluetoothDevice> deviceSet = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
-    final List<ListEntry> devices = new ArrayList<ListEntry>(deviceSet.size());
-
-    for (final BluetoothDevice device : deviceSet)
-    {
-      devices.add(new ListEntry(device.getAddress(), device.getName()));
-    }
-
-    final Spinner daisyInput = (Spinner) findViewById(R.id.daisyInput);
-    final ArrayAdapter<ListEntry> daisyInputAdapter = ListEntry.fromList(this, devices, android.R.layout.simple_spinner_item, true);
-    daisyInputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    daisyInput.setAdapter(daisyInputAdapter);
+    final EditText daisyInput = (EditText) findViewById(R.id.daisyInput);
 
     final Spinner pinInput = (Spinner) findViewById(R.id.pinInput);
     final ArrayAdapter<ListEntry> pinInputAdapter =
         ListEntry.fromResources(this,
-                                R.array.bt_pin_entry_values,
-                                R.array.bt_pin_entries,
+                                R.array.wifi_pin_entry_values,
+                                R.array.wifi_pin_entries,
                                 android.R.layout.simple_spinner_item,
                                 false);
     pinInputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,29 +62,7 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
     buttonTypeInput.setAdapter(buttonTypeInputAdapter);
 
     findViewById(R.id.cancelButton).setOnClickListener(this);
-    final Button saveButton = (Button)findViewById(R.id.saveButton);
-    saveButton.setOnClickListener(this);
-
-    final EditText labelInput = (EditText)findViewById(R.id.buttonLabelInput);
-    labelInput.addTextChangedListener(new AbstractTextWatcher()
-    {
-      @Override
-      public void afterTextChanged(final Editable s)
-      {
-        boolean hasLabel = false;
-        final int length = s.length();
-        for (int i = 0; i < length; i++)
-        {
-          if (!Character.isWhitespace(s.charAt(i)))
-          {
-            hasLabel = true;
-            break;
-          }
-        }
-
-        saveButton.setEnabled(hasLabel);
-      }
-    });
+    findViewById(R.id.saveButton).setOnClickListener(this);
 
     Bundle extras = getIntent().getExtras();
     buttonId = extras == null ? 0 : extras.getInt("buttonId");
@@ -110,16 +70,11 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
     if (buttonId > 0)
     {
       final ButtonAttributes button = Config.loadButton(this, buttonId);
-      labelInput.setText(button.getLabel());
-      setSelection(daisyInput, button.getDeviceId());
+      ((EditText)findViewById(R.id.buttonLabelInput)).setText(button.getLabel());
+      daisyInput.setText(button.getDeviceId());
       setSelection(pinInput, Integer.toString(button.getPin()));
       setSelection(buttonTypeInput, button.getBehavior().name());
       powerOn = button.isPowerOn();
-      saveButton.setEnabled(true);
-    }
-    else
-    {
-      saveButton.setEnabled(false);
     }
   }
 
@@ -165,18 +120,20 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
 
     final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-    final EditText labelInput = ((EditText)findViewById(R.id.buttonLabelInput));
-    final Spinner daisyInput = (Spinner) findViewById(R.id.daisyInput);
+    final EditText labelInput = (EditText)findViewById(R.id.buttonLabelInput);
+    final EditText serverInput = (EditText)findViewById(R.id.serverInput);
+    final EditText daisyInput = (EditText) findViewById(R.id.daisyInput);
     final Spinner pinInput = (Spinner) findViewById(R.id.pinInput);
     final Spinner buttonTypeInput = (Spinner) findViewById(R.id.buttonTypeInput);
 
     final String label = labelInput.getText().toString();
-    final String deviceId = ((ListEntry)daisyInput.getSelectedItem()).id;
+    serverInput.getText().toString();
+    final String deviceId = daisyInput.getText().toString();
     final int pin = Integer.valueOf(((ListEntry)pinInput.getSelectedItem()).id);
     final String typeString = ((ListEntry)buttonTypeInput.getSelectedItem()).id;
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, typeString);
 
-    final ButtonAttributes button = new ButtonAttributes(prefs, ButtonTargetType.BLUETOOTH, buttonId, label, behavior, pin, deviceId, powerOn);
+    final ButtonAttributes button = new ButtonAttributes(prefs, ButtonTargetType.WIFI, buttonId, label, behavior, pin, deviceId, powerOn);
     button.save();
 
     if (ids != null)
