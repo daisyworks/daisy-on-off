@@ -109,7 +109,7 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
 
     if (buttonId > 0)
     {
-      final ButtonAttributes button = Config.loadButton(this, buttonId);
+      final AbstractOnOffButton button = Config.loadButton(this, buttonId);
       labelInput.setText(button.getLabel());
       setSelection(daisyInput, button.getDeviceId());
       setSelection(pinInput, Integer.toString(button.getPin()));
@@ -176,7 +176,7 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
     final String typeString = ((ListEntry)buttonTypeInput.getSelectedItem()).id;
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, typeString);
 
-    final ButtonAttributes button = new ButtonAttributes(prefs, ButtonTargetType.BLUETOOTH, buttonId, label, behavior, pin, deviceId, powerOn);
+    final BluetoothButton button = new BluetoothButton(prefs, buttonId, label, behavior, pin, deviceId, powerOn);
     button.save();
 
     if (ids != null)

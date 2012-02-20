@@ -20,12 +20,13 @@ public class Config
   private static final String BUTTON_PREFIX = PREFS_PREFIX + "button.";
   private static final String IDS_KEY = PREFS_PREFIX + "button_ids";
 
-  private static final String PREF_TARGET_TYPE = ".target_type";
-  private static final String PREF_LABEL = ".label";
-  private static final String PREF_DEVICE_ID = ".device_id";
-  private static final String PREF_PIN = ".pin";
-  private static final String PREF_TYPE = ".type";
-  private static final String PREF_POWER_ON = ".power_on";
+  public static final String PREF_TARGET_TYPE = ".target_type";
+  public static final String PREF_LABEL = ".label";
+  public static final String PREF_DEVICE_ID = ".device_id";
+  public static final String PREF_PIN = ".pin";
+  public static final String PREF_TYPE = ".type";
+  public static final String PREF_POWER_ON = ".power_on";
+  public static final String PREF_SERVER = ".server";
 
   private static final String CURRENT_POWER_STATE = "com.daisyworks.prefs.powerOn";
   private static final String DEPRECATED_BUTTON_COUNT_KEY = "com.daisyworks.prefs.buttonCount";
@@ -78,13 +79,13 @@ public class Config
     Log.i(LOG_TAG, "Stored ids: " + idsString);
   }
 
-  public static List<ButtonAttributes> loadButtons(final Context context)
+  public static List<AbstractOnOffButton> loadButtons(final Context context)
   {
     final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
     final int version = prefs.getInt(VERSION_KEY, 0);
 
-    final List<ButtonAttributes> buttonList = new ArrayList<ButtonAttributes>();
+    final List<AbstractOnOffButton> buttonList = new ArrayList<AbstractOnOffButton>();
 
     if (version < 3)
     {
@@ -113,26 +114,13 @@ public class Config
     return buttonList;
   }
 
-  public static ButtonAttributes loadButton(final Context context, final int buttonId)
+  public static AbstractOnOffButton loadButton(final Context context, final int buttonId)
   {
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     return loadV3(sharedPrefs, buttonId);
   }
 
-  public static void saveButton(final SharedPreferences prefs, final ButtonAttributes button)
-  {
-    final int buttonId = button.getButtonId();
-    final Editor editor = prefs.edit();
-    editor.putString(key(buttonId, PREF_TARGET_TYPE), button.getTargetType().name());
-    editor.putString(key(buttonId, PREF_LABEL), button.getLabel());
-    editor.putString(key(buttonId, PREF_DEVICE_ID), button.getDeviceId());
-    editor.putInt(key(buttonId, PREF_PIN), button.getPin());
-    editor.putString(key(buttonId, PREF_TYPE), button.getBehavior().name());
-    editor.putBoolean(CURRENT_POWER_STATE + buttonId, button.isPowerOn());
-    editor.commit();
-  }
-
-  public static ButtonAttributes loadButton(final SharedPreferences sharedPrefs, final int buttonId)
+  public static AbstractOnOffButton loadButton(final SharedPreferences sharedPrefs, final int buttonId)
   {
     final int version = sharedPrefs.getInt("com.daisyworks.on_off.version", 0);
 
@@ -148,28 +136,20 @@ public class Config
     throw new IllegalStateException("Version " + version + " not supported.");
   }
 
-  private static String key(final int buttonId, final String pref)
+  public static String key(final int buttonId, final String pref)
   {
     return BUTTON_PREFIX + buttonId + pref;
   }
 
-  private static ButtonAttributes loadV3(final SharedPreferences sharedPrefs, final int buttonId)
+  private static AbstractOnOffButton loadV3(final SharedPreferences sharedPrefs, final int buttonId)
   {
-    final String label = sharedPrefs.getString(key(buttonId, PREF_LABEL), "Button");
-    final String deviceId = sharedPrefs.getString(key(buttonId, PREF_DEVICE_ID), null);
-    final int pin = sharedPrefs.getInt(key(buttonId, PREF_PIN), 0);
-    final String behaviorString = sharedPrefs.getString(key(buttonId, PREF_TYPE), ButtonBehavior.ON_OFF.name());
     final String targetTypeString = sharedPrefs.getString(key(buttonId, PREF_TARGET_TYPE), ButtonTargetType.BLUETOOTH.name());
-
-    final boolean powerOn = sharedPrefs.getBoolean(key(buttonId, PREF_POWER_ON), false);
-
-    final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
     final ButtonTargetType targetType = Enum.valueOf(ButtonTargetType.class, targetTypeString);
 
-    return new ButtonAttributes(sharedPrefs, targetType, buttonId, label, behavior, pin, deviceId, powerOn);
+    return targetType == ButtonTargetType.BLUETOOTH ? new BluetoothButton(sharedPrefs, buttonId) : new WifiButton(sharedPrefs, buttonId);
   }
 
-  private static ButtonAttributes loadV1V2(final SharedPreferences sharedPrefs, final int buttonId)
+  private static AbstractOnOffButton loadV1V2(final SharedPreferences sharedPrefs, final int buttonId)
   {
     final String v1DeviceId = sharedPrefs.getString("com.daisyworks.prefs.whichDaisy", null);
 
@@ -182,14 +162,7 @@ public class Config
     final int pin = Integer.valueOf(pinString);
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
 
-    final ButtonAttributes attr = new ButtonAttributes(sharedPrefs,
-                                                       ButtonTargetType.BLUETOOTH,
-                                                       buttonId,
-                                                       label,
-                                                       behavior,
-                                                       pin,
-                                                       deviceId,
-                                                       powerOn);
+    final AbstractOnOffButton attr = new BluetoothButton(sharedPrefs, buttonId, label, behavior, pin, deviceId, powerOn);
 
     return attr;
   }

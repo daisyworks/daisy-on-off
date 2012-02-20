@@ -24,6 +24,7 @@ import java.io.IOException;
 import android.os.Handler;
 import android.util.Log;
 
+import com.daisyworks.android.ThreadUtil;
 import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
@@ -33,10 +34,14 @@ public class SendPulseAction extends BaseBluetoothAction
   private final String cmdOn;
   private final String cmdOff;
 
-  public SendPulseAction (final String cmdOn, final String cmdOff)
+  private final long[] pulseArray;
+
+
+  public SendPulseAction (final String cmdOn, final String cmdOff, final long[] pulseArray)
   {
     this.cmdOn = cmdOn;
     this.cmdOff = cmdOff;
+    this.pulseArray = pulseArray;
   }
 
   @Override
@@ -45,17 +50,21 @@ public class SendPulseAction extends BaseBluetoothAction
     writeln(cmdOn);
     Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
 
-    try
+    boolean on = true;
+
+    for (int i = 0; i < pulseArray.length; i++)
     {
-      Thread.sleep(1000);
-    }
-    catch(InterruptedException ie)
-    {
-      Thread.interrupted();
+      long target = System.currentTimeMillis() + pulseArray[i];
+      writeln(on ? cmdOn : cmdOff);
+      ThreadUtil.waitUntil(target);
+      on = !on;
     }
 
-    writeln(cmdOff);
+    if (!on)
+    {
+      writeln(cmdOff);
+    }
+
     Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
   }
-
 }

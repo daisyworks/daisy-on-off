@@ -39,6 +39,8 @@ public class ConfigureWifiButtonActivity extends Activity implements OnClickList
   {
     super.onResume();
 
+    final EditText labelInput = (EditText) findViewById(R.id.buttonLabelInput);
+    final EditText serverInput = (EditText) findViewById(R.id.serverInput);
     final EditText daisyInput = (EditText) findViewById(R.id.daisyInput);
 
     final Spinner pinInput = (Spinner) findViewById(R.id.pinInput);
@@ -69,8 +71,9 @@ public class ConfigureWifiButtonActivity extends Activity implements OnClickList
 
     if (buttonId > 0)
     {
-      final ButtonAttributes button = Config.loadButton(this, buttonId);
-      ((EditText)findViewById(R.id.buttonLabelInput)).setText(button.getLabel());
+      final WifiButton button = (WifiButton) Config.loadButton(this, buttonId);
+      labelInput.setText(button.getLabel());
+      serverInput.setText(button.getServer());
       daisyInput.setText(button.getDeviceId());
       setSelection(pinInput, Integer.toString(button.getPin()));
       setSelection(buttonTypeInput, button.getBehavior().name());
@@ -127,13 +130,13 @@ public class ConfigureWifiButtonActivity extends Activity implements OnClickList
     final Spinner buttonTypeInput = (Spinner) findViewById(R.id.buttonTypeInput);
 
     final String label = labelInput.getText().toString();
-    serverInput.getText().toString();
+    final String server = serverInput.getText().toString();
     final String deviceId = daisyInput.getText().toString();
     final int pin = Integer.valueOf(((ListEntry)pinInput.getSelectedItem()).id);
     final String typeString = ((ListEntry)buttonTypeInput.getSelectedItem()).id;
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, typeString);
 
-    final ButtonAttributes button = new ButtonAttributes(prefs, ButtonTargetType.WIFI, buttonId, label, behavior, pin, deviceId, powerOn);
+    final WifiButton button = new WifiButton(prefs, buttonId, label, behavior, pin, deviceId, server, powerOn);
     button.save();
 
     if (ids != null)

@@ -77,7 +77,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
         button = ((Button)buttonRow.findViewById(R.id.main_button2));
       }
 
-      ButtonAttributes buttonAttr = Config.loadButton(this, Integer.valueOf(buttonId));
+      AbstractOnOffButton buttonAttr = Config.loadButton(this, Integer.valueOf(buttonId));
       final String label = button.getText() + "\n" + buttonAttr.getLabel();
       button.setText(label);
       button.setTag(R.id.buttonId, buttonId);
@@ -143,7 +143,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     }
     else if (buttonType == TYPE_CONFIG_BUTTON)
     {
-      final ButtonAttributes buttonAttr = (ButtonAttributes) v.getTag(R.id.buttonAttributes);
+      final AbstractOnOffButton buttonAttr = (AbstractOnOffButton) v.getTag(R.id.buttonAttributes);
       final Intent intent = new Intent(this, buttonAttr.getTargetType().getConfigurationActivity());
       intent.putExtra("buttonId", Integer.parseInt((String)v.getTag(R.id.buttonId)));
       startActivity(intent);

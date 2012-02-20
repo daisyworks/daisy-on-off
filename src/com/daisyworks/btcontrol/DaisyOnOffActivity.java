@@ -19,13 +19,19 @@
 */
 package com.daisyworks.btcontrol;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +46,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.daisyworks.android.HelpActivity;
+import com.daisyworks.android.IOUtil;
 import com.daisyworks.android.bluetooth.AbstractBluetoothActivity;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.EnterCmdModeAction;
@@ -63,7 +70,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
                        new String[] {"S*,0400", "S*,0404" },
                        new String[] {"S*,0800", "S*,0808" }};
 
-  private List<ButtonAttributes> buttonAttributes;
+  private List<AbstractOnOffButton> buttonAttributes;
 
   private Map<String, BTCommThread> devices = new HashMap<String, BTCommThread>();
   private Map<Integer, ToggleButton> toggleButtons = new HashMap<Integer, ToggleButton>();
@@ -82,7 +89,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 
     stopCommThreads();
 
-    for (final ButtonAttributes buttonAttr : buttonAttributes)
+    for (final AbstractOnOffButton buttonAttr : buttonAttributes)
     {
       final String deviceId = buttonAttr.getDeviceId();
       if (!devices.containsKey(deviceId))
@@ -108,7 +115,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
     ViewGroup buttonRow = null;
 
     int i = 0;
-    for (final ButtonAttributes buttonAttr : buttonAttributes)
+    for (final AbstractOnOffButton buttonAttr : buttonAttributes)
     {
       int pushButtonId = 0;
       int toggleButtonId = 0;
@@ -213,28 +220,28 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 
   void updateButtonState(final ButtonState buttonState)
   {
-    for (final ButtonAttributes buttonAttr : buttonAttributes)
+    for (final AbstractOnOffButton button : buttonAttributes)
     {
-      final boolean isOn = buttonState.isPinHigh(buttonAttr.getPhysicalPin());
+      final boolean isOn = buttonState.isPinHigh(button.getPhysicalPin());
 
-      if (buttonAttr.getBehavior() == ButtonBehavior.ON_OFF)
+      if (button.getBehavior() == ButtonBehavior.ON_OFF)
       {
-        final ToggleButton button = toggleButtons.get(buttonAttr.getButtonId());
-        if (button != null)
+        final ToggleButton toggleButton = toggleButtons.get(button.getButtonId());
+        if (toggleButton != null)
         {
-          button.setChecked(isOn);
+          toggleButton.setChecked(isOn);
         }
-        buttonAttr.setPowerOn(isOn);
+        button.setPowerOn(isOn);
       }
-      else if (buttonAttr.isPowerOn())
+      else if (button.isPowerOn())
       {
-        pinOff(buttonAttr);
-        buttonAttr.setPowerOn(false);
+        button.turnPinOff(this);
+        button.setPowerOn(false);
       }
     }
   }
 
-  private void pinOn(final ButtonAttributes button)
+  public void bluetoothPinOn(final BluetoothButton button)
   {
     final String deviceId = button.getDeviceId();
     final BTCommThread btComm = devices.get(deviceId);
@@ -243,7 +250,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
     btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][ON]));
   }
 
-  private void pinOff(final ButtonAttributes button)
+  public void bluetoothPinOff(final BluetoothButton button)
   {
     final String deviceId = button.getDeviceId();
     final BTCommThread btComm = devices.get(deviceId);
@@ -252,27 +259,82 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
     btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][OFF]));
   }
 
-  private void sendPulse(final ButtonAttributes button)
+  public void bluetoothSendPulse(final BluetoothButton button)
   {
     final String deviceId = button.getDeviceId();
     final BTCommThread btComm = devices.get(deviceId);
     final int pin = button.getPin();
 
-    btComm.enqueueAction(new SendPulseAction(COMMANDS[pin][ON], COMMANDS[pin][OFF]));
+    btComm.enqueueAction(new SendPulseAction(COMMANDS[pin][ON], COMMANDS[pin][OFF], new long[] {1000}));
+  }
+
+  public void sendWifiCommand(final WifiButton button, final String cmd)
+  {
+    final String url = "http://" + button.getServer() + "/services/daisy/" + button.getDeviceId() + "/" + button.getPin() + "/" + cmd;
+
+    new AsyncTask<Void, Integer, Boolean>()
+    {
+      @Override
+      protected Boolean doInBackground (final Void ... params)
+      {
+        InputStream in = null;
+
+        try
+        {
+          in = new URL(url).openStream();
+          BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+          String line = null;
+          while ((line = reader.readLine()) != null)
+          {
+            System.out.println(line);
+          }
+          return Boolean.TRUE;
+        }
+        catch(final Exception e)
+        {
+          Log.e(Config.LOG_TAG, "Failed to execute command", e);
+        }
+        finally
+        {
+          IOUtil.closeQuietly(in);
+        }
+        return Boolean.FALSE;
+      }
+
+      @Override
+      protected void onCancelled()
+      {
+//        dismissDialog(DAISY_WIFI_PROGRESS_DIALOG);
+//        showDialog(DAISY_WIFI_FAILED_DIALOG);
+      }
+
+      @Override
+      protected void onPostExecute(final Boolean result)
+      {
+        if (result == null || !result)
+        {
+          onCancelled();
+        }
+        else
+        {
+          // dismissDialog(DAISY_WIFI_PROGRESS_DIALOG);
+        }
+      }
+    }.execute();
   }
 
   @Override
   public boolean onTouch (final View v, final MotionEvent event)
   {
-    final ButtonAttributes buttonAttr = (ButtonAttributes)v.getTag(R.id.buttonAttributes);
+    final AbstractOnOffButton button = (AbstractOnOffButton)v.getTag(R.id.buttonAttributes);
 
     if (event.getAction() == MotionEvent.ACTION_DOWN)
     {
-      pinOn(buttonAttr);
+      button.turnPinOn(this);
     }
     else if (event.getAction() == MotionEvent.ACTION_UP)
     {
-      pinOff(buttonAttr);
+      button.turnPinOff(this);
     }
     return false;
   }
@@ -285,24 +347,24 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
       startActivity(new Intent(this, ConfigurationActivity.class));
       return;
     }
-    final ButtonAttributes buttonAttr = (ButtonAttributes)v.getTag(R.id.buttonAttributes);
-    if (buttonAttr.getBehavior() == ButtonBehavior.PULSE)
+    final AbstractOnOffButton button = (AbstractOnOffButton)v.getTag(R.id.buttonAttributes);
+    if (button.getBehavior() == ButtonBehavior.PULSE)
     {
-      sendPulse(buttonAttr);
+      button.sendPulse(this);
     }
-    else if (buttonAttr.getBehavior() == ButtonBehavior.ON_OFF)
+    else if (button.getBehavior() == ButtonBehavior.ON_OFF)
     {
-      if (buttonAttr.isPowerOn())
+      if (button.isPowerOn())
       {
-        pinOff(buttonAttr);
-        buttonAttr.setPowerOn(false);
+        button.turnPinOff(this);
+        button.setPowerOn(false);
       }
       else
       {
-        pinOn(buttonAttr);
-        buttonAttr.setPowerOn(true);
+        button.turnPinOn(this);
+        button.setPowerOn(true);
       }
-      ((Button)v).setText(buttonAttr.getLabel());
+      ((Button)v).setText(button.getLabel());
     }
   }
 
