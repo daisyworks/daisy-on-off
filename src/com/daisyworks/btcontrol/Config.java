@@ -28,7 +28,7 @@ public class Config
   public static final String PREF_POWER_ON = ".power_on";
   public static final String PREF_SERVER = ".server";
 
-  private static final String CURRENT_POWER_STATE = "com.daisyworks.prefs.powerOn";
+  private static final String DEPRECATED_CURRENT_POWER_STATE = "com.daisyworks.prefs.powerOn";
   private static final String DEPRECATED_BUTTON_COUNT_KEY = "com.daisyworks.prefs.buttonCount";
 
   public static List<String> loadIds(final Context context)
@@ -93,12 +93,19 @@ public class Config
       int buttonCount = Integer.valueOf(prefs.getString(DEPRECATED_BUTTON_COUNT_KEY, "0"));
       for (int i = 1; i <= buttonCount; i++)
       {
-        buttonList.add(Config.loadButton(context, i));
+        final AbstractOnOffButton button = Config.loadV1V2(prefs, i);
+        buttonList.add(button);
         ids.add(String.valueOf(i));
       }
       Config.storeIds(context, ids);
       Editor editor = prefs.edit();
       editor.putInt(VERSION_KEY, 3);
+      editor.remove("com.daisyworks.prefs.whichDaisy");
+      for (final AbstractOnOffButton button : buttonList)
+      {
+        button.save(editor);
+        cleanupV1V2(editor, button.getButtonId());
+      }
       editor.commit();
     }
     else
@@ -107,7 +114,7 @@ public class Config
       for (final String id : ids)
       {
         final int buttonId = Integer.valueOf(id);
-        buttonList.add(loadButton(context, buttonId));
+        buttonList.add(loadV3(prefs, buttonId));
       }
     }
 
@@ -118,22 +125,6 @@ public class Config
   {
     final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     return loadV3(sharedPrefs, buttonId);
-  }
-
-  public static AbstractOnOffButton loadButton(final SharedPreferences sharedPrefs, final int buttonId)
-  {
-    final int version = sharedPrefs.getInt("com.daisyworks.on_off.version", 0);
-
-    if (version < 3)
-    {
-      return loadV1V2(sharedPrefs, buttonId);
-    }
-    if (version == 3)
-    {
-      return loadV3(sharedPrefs, buttonId);
-    }
-
-    throw new IllegalStateException("Version " + version + " not supported.");
   }
 
   public static String key(final int buttonId, final String pref)
@@ -157,7 +148,7 @@ public class Config
     final String pinString = sharedPrefs.getString("com.daisyworks.prefs.buttonPin" + buttonId, "0");
     final String behaviorString = sharedPrefs.getString("com.daisyworks.prefs.buttonType" + buttonId, "ON_OFF");
     final String deviceId = sharedPrefs.getString("com.daisyworks.prefs.button" + buttonId + "WhichDaisy", v1DeviceId);
-    final boolean powerOn = sharedPrefs.getBoolean(CURRENT_POWER_STATE + buttonId, false);
+    final boolean powerOn = sharedPrefs.getBoolean(DEPRECATED_CURRENT_POWER_STATE + buttonId, false);
 
     final int pin = Integer.valueOf(pinString);
     final ButtonBehavior behavior = Enum.valueOf(ButtonBehavior.class, behaviorString);
@@ -165,5 +156,14 @@ public class Config
     final AbstractOnOffButton attr = new BluetoothButton(sharedPrefs, buttonId, label, behavior, pin, deviceId, powerOn);
 
     return attr;
+  }
+
+  private static void cleanupV1V2(final Editor editor, final int buttonId)
+  {
+    editor.remove("com.daisyworks.prefs.buttonLabel" + buttonId);
+    editor.remove("com.daisyworks.prefs.buttonPin" + buttonId);
+    editor.remove("com.daisyworks.prefs.buttonType" + buttonId);
+    editor.remove("com.daisyworks.prefs.button" + buttonId + "WhichDaisy");
+    editor.remove(DEPRECATED_CURRENT_POWER_STATE + buttonId);
   }
 }
