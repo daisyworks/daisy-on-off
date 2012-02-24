@@ -125,6 +125,10 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
 
   private void setSelection(final Spinner spinner, final String value)
   {
+    if (value == null)
+    {
+      return;
+    }
     @SuppressWarnings("unchecked")
     final ArrayAdapter<ListEntry> adapter = (ArrayAdapter<ListEntry>) spinner.getAdapter();
     for (int i = 0; i < adapter.getCount(); i++)
