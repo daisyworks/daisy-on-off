@@ -20,6 +20,8 @@ import com.daisyworks.android.bluetooth.R;
 
 public class ConfigurationActivity extends Activity implements OnClickListener
 {
+  private static final boolean WIFI_DAISY_ENABLED = false;
+
   private static final String LOG_TAG = "DaisyOnOffConfig";
   private static final Integer TYPE_CONFIG_BUTTON = 2;
   private static final Integer TYPE_REMOVE_BUTTON = 3;
@@ -135,7 +137,15 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     final Object buttonType = v.getTag(R.id.buttonType);
     if (v.getId() == R.id.addButton)
     {
-      showDialog(DIALOG_BUTTON_TYPE);
+      if (WIFI_DAISY_ENABLED)
+      {
+        showDialog(DIALOG_BUTTON_TYPE);
+      }
+      else
+      {
+        final Intent intent = new Intent(ConfigurationActivity.this, ConfigureBluetoothButtonActivity.class);
+        startActivity(intent);
+      }
     }
     else if (v.getId() == R.id.doneButton)
     {

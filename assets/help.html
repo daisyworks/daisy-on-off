@@ -4,21 +4,28 @@
     The Daisy On/Off application is for use with the Daisy Bluetooth breakout board. 
     It can be configured to control several output pins on the breakout board.
     
-    <h3>Settings</h3>
-    Before the application can be used to control devices, you must configure which daisy you wish to work with as well as how many controls you need and their functions.
+    <h3>Configuration</h3>
+    Before the application can be used to control devices, you must configure your control buttons, what device they should connect to, and what function they should perform. 
+    The main screen shows your configured control buttons, as well as a Configure button at the bottom. 
+    When you first start the application, no buttons will be configured.
+    Press the Configure button to add control buttons.      
     
-    <h4>Daisy</h4>
-    When you select the Daisy option in Settings, you will see a list of bluetooth devices that your Android device has paired with. 
-    If you do not see the Daisy in the list, you should first pair with your daisy.
+    <h4>Adding New Buttons</h4>
+    Click the button labeled "Add Button" to add new control button. The application currently limits you to 6 buttons.
     
-    <h4>Number of Buttons</h4>
-    Here you can select the number of controls available on the main screen. You may have between one and five buttons.
-    
-    <h4>Button Configuration</h4>
-    For each button, you can configure the button label, the pin and the button behavior.
+    <h4>Removing Buttons</h4>
+    The Configuration screen will show the configured buttons. Each button will have a red circle with an X in the lower, right corner. 
+    Press the X to delete the corresponding button. You will be prompted for confirmation before the removal takes place.
+
+    <h4>New Button Configuration</h4>
+    For each button, you can configure the button label, the target Daisy, the target pin and the button behavior.
     
     <h5>Button Label</h5>
     The text entered here will show up on the given button on the main screen.
+    
+    <h5>Target Daisy</h5>
+    You may select from a list of bluetooth devices that your Android device has paired with. 
+    If you do not see the Daisy in the list, you should first pair with your daisy.
     
     <h5>Pin</h5>
     The device you wish to control will be connected to a pin on the Daisy Bluetooth breakout board. 
