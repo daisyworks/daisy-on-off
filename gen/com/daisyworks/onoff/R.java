@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 public final class R {
     public static final class array {
@@ -102,19 +102,20 @@ public final class R {
         public static final int button_scan=0x7f040007;
         public static final int edit=0x7f040005;
         public static final int help=0x7f040001;
-        public static final int label_button_label=0x7f04001e;
-        public static final int label_button_type=0x7f040021;
-        public static final int label_daisy=0x7f04001f;
-        public static final int label_pin=0x7f040020;
-        public static final int label_server=0x7f040022;
+        public static final int label_button_label=0x7f04001f;
+        public static final int label_button_type=0x7f040022;
+        public static final int label_daisy=0x7f040020;
+        public static final int label_pin=0x7f040021;
+        public static final int label_server=0x7f040023;
         public static final int no=0x7f040004;
         public static final int ok=0x7f040002;
         public static final int prefs_which_daisy_key=0x7f040012;
         public static final int settings=0x7f040000;
-        public static final int title_config_bt_button=0x7f04001c;
-        public static final int title_config_wifi_button=0x7f04001d;
-        public static final int title_configure=0x7f04001b;
-        public static final int title_main=0x7f04001a;
+        public static final int title_app=0x7f04001a;
+        public static final int title_config_bt_button=0x7f04001d;
+        public static final int title_config_wifi_button=0x7f04001e;
+        public static final int title_configure=0x7f04001c;
+        public static final int title_main=0x7f04001b;
         public static final int yes=0x7f040003;
     }
 }

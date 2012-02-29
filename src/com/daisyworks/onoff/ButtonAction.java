@@ -1,4 +1,4 @@
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 public enum ButtonAction
 {

@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol.action;
+package com.daisyworks.onoff.action;
 
 import java.io.IOException;
 
@@ -27,8 +27,8 @@ import android.util.Log;
 import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
-import com.daisyworks.btcontrol.ButtonState;
-import com.daisyworks.btcontrol.DaisyOnOffActivity;
+import com.daisyworks.onoff.ButtonState;
+import com.daisyworks.onoff.DaisyOnOffActivity;
 
 public class SetupAction extends BaseBluetoothAction
 {

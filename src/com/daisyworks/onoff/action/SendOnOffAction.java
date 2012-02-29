@@ -17,9 +17,30 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff.action;
 
-public enum ButtonBehavior
+import java.io.IOException;
+
+import android.os.Handler;
+import android.util.Log;
+
+import com.daisyworks.android.bluetooth.AsyncReader;
+import com.daisyworks.android.bluetooth.BTCommThread;
+import com.daisyworks.android.bluetooth.BaseBluetoothAction;
+
+public class SendOnOffAction extends BaseBluetoothAction
 {
-  ON_OFF, PULSE, HOLD_PULSE;
+  private final String cmd;
+
+  public SendOnOffAction (final String cmd)
+  {
+    this.cmd = cmd;
+  }
+
+  @Override
+  protected void performIOAction (final AsyncReader reader, final Handler handler) throws IOException
+  {
+    writeln(cmd);
+    Log.i(BTCommThread.LOG_TAG, "Read: " + reader.readLine(500));
+  }
 }

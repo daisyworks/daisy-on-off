@@ -10,7 +10,8 @@
     <string name="button.save">Save</string>
     <string name="button.cancel">Cancel</string>
     
-    <string name="title.main">Daisy On/Off</string>
+    <string name="title.app">Daisy WiFfly On/Off (Experimental)</string>
+    <string name="title.main">Daisy WiFfly On/Off</string>
     <string name="title.configure">Configure Daisy On/Off</string>
     <string name="title.config_bt_button">Configure Bluetooth Button</string>
     <string name="title.config_wifi_button">Configure WiFi Button</string>

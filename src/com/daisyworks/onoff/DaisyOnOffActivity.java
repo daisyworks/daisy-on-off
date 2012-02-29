@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -51,9 +51,9 @@ import com.daisyworks.android.bluetooth.AbstractBluetoothActivity;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.EnterCmdModeAction;
 import com.daisyworks.android.bluetooth.R;
-import com.daisyworks.btcontrol.action.SendOnOffAction;
-import com.daisyworks.btcontrol.action.SendPulseAction;
-import com.daisyworks.btcontrol.action.SetupAction;
+import com.daisyworks.onoff.action.SendOnOffAction;
+import com.daisyworks.onoff.action.SendPulseAction;
+import com.daisyworks.onoff.action.SetupAction;
 
 public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnClickListener, OnTouchListener
 {

@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

@@ -17,7 +17,7 @@
 
     Copyright 2011 DaisyWorks, Inc
 */
-package com.daisyworks.btcontrol.action;
+package com.daisyworks.onoff.action;
 
 import java.io.IOException;
 

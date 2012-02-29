@@ -1,4 +1,4 @@
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -31,7 +31,7 @@ public class WifiButton extends AbstractOnOffButton
   }
 
   /**
-   * @see com.daisyworks.btcontrol.AbstractOnOffButton#turnPinOn(com.daisyworks.btcontrol.DaisyOnOffActivity)
+   * @see com.daisyworks.onoff.AbstractOnOffButton#turnPinOn(com.daisyworks.onoff.DaisyOnOffActivity)
    */
   @Override
   public void turnPinOn(final DaisyOnOffActivity context)
@@ -40,7 +40,7 @@ public class WifiButton extends AbstractOnOffButton
   }
 
   /**
-   * @see com.daisyworks.btcontrol.AbstractOnOffButton#turnPinOff(com.daisyworks.btcontrol.DaisyOnOffActivity)
+   * @see com.daisyworks.onoff.AbstractOnOffButton#turnPinOff(com.daisyworks.onoff.DaisyOnOffActivity)
    */
   @Override
   public void turnPinOff(final DaisyOnOffActivity context)
@@ -49,7 +49,7 @@ public class WifiButton extends AbstractOnOffButton
   }
 
   /**
-   * @see com.daisyworks.btcontrol.AbstractOnOffButton#sendPulse(com.daisyworks.btcontrol.DaisyOnOffActivity)
+   * @see com.daisyworks.onoff.AbstractOnOffButton#sendPulse(com.daisyworks.onoff.DaisyOnOffActivity)
    */
   @Override
   public void sendPulse(final DaisyOnOffActivity context)
@@ -58,7 +58,7 @@ public class WifiButton extends AbstractOnOffButton
   }
 
   /**
-   * @see com.daisyworks.btcontrol.AbstractOnOffButton#save(android.content.SharedPreferences.Editor)
+   * @see com.daisyworks.onoff.AbstractOnOffButton#save(android.content.SharedPreferences.Editor)
    */
   @Override
   public void save(final Editor editor)

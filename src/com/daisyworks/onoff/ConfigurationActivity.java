@@ -1,4 +1,4 @@
-package com.daisyworks.btcontrol;
+package com.daisyworks.onoff;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import com.daisyworks.android.bluetooth.R;
 
 public class ConfigurationActivity extends Activity implements OnClickListener
 {
-  private static final boolean WIFI_DAISY_ENABLED = false;
+  private static final boolean WIFI_DAISY_ENABLED = true;
 
   private static final String LOG_TAG = "DaisyOnOffConfig";
   private static final Integer TYPE_CONFIG_BUTTON = 2;
