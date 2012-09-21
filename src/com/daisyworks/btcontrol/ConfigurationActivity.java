@@ -54,7 +54,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
   @SuppressWarnings("null")
   protected void redoLayout()
   {
-    Log.i(LOG_TAG, "Laying out with ids: " + ids);
+	if(DaisyOnOffActivity.DEBUG) Log.i(LOG_TAG, "Laying out with ids: " + ids);
 
     setContentView(R.layout.configure);
 
@@ -232,7 +232,7 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     int oldSize = ids.size();
     final View button = (View) selectedButton.getTag(R.id.linkedButton);
     final String buttonId = (String)button.getTag(R.id.buttonId);
-    Log.i(LOG_TAG, "Contains id '" + buttonId + "' " + ids.contains(buttonId));
+    if(DaisyOnOffActivity.DEBUG) Log.i(LOG_TAG, "Contains id '" + buttonId + "' " + ids.contains(buttonId));
     ids.remove(buttonId);
 
     Config.storeIds(this, ids);

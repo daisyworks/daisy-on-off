@@ -31,14 +31,14 @@ import com.daisyworks.btcontrol.ButtonState;
 import com.daisyworks.btcontrol.DaisyOnOffActivity;
 
 public class SetupAction extends BaseBluetoothAction
-{
+{  
   @Override
   protected void performIOAction (final AsyncReader reader, final Handler handler) throws IOException
   {
     long startTime = System.currentTimeMillis();
     writeln("g@");
     String val = reader.readLine(1000);
-    Log.i(BTCommThread.LOG_TAG, "SetupAction - Current GPIO direction mask: " + val);
+    if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction - Current GPIO direction mask: " + val);
 
     boolean pin3setToOutput = false;
     boolean pin6setToOutput = false;
@@ -55,33 +55,33 @@ public class SetupAction extends BaseBluetoothAction
     if (!pin3setToOutput)
     {
       writeln("S@,0808");
-      Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 3 high" + reader.readLine(200));
+      if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 3 output" + reader.readLine(200));
     }
 
     if (!pin6setToOutput)
     {
       writeln("S@,4040");
-      Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 6 high" + reader.readLine(200));
+      if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 6 output" + reader.readLine(200));
     }
 
     if (!pin7setToOutput)
     {
       writeln("S@,8080");
-      Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 7 high" + reader.readLine(200));
+      if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction: Setting pin 7 output" + reader.readLine(200));
     }
 
     writeln("g&");
     val = reader.readLine(1000);
-    Log.i(BTCommThread.LOG_TAG, "SetupAction - Current GPIO output mask: " + val);
+    if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction - Current GPIO output mask: " + val);
     final int gpioMask = val == null ? 0 : Integer.parseInt(val.trim(), 16);
 
     writeln("g*");
     val = reader.readLine(1000);
-    Log.i(BTCommThread.LOG_TAG, "SetupAction - Current PIO output mask: " + val);
+    if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction - Current PIO output mask: " + val);
     final int pioMask = val == null ? 0 : Integer.parseInt(val.trim(), 16);
 
     long totalTime = System.currentTimeMillis() - startTime;
-    Log.i(BTCommThread.LOG_TAG, "SetupAction: took " + totalTime + "ms");
+    if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "SetupAction: took " + totalTime + "ms");
 
     handler.obtainMessage(DaisyOnOffActivity.BUTTON_STATE_MESSAGE, new ButtonState(gpioMask, pioMask)).sendToTarget();
   }

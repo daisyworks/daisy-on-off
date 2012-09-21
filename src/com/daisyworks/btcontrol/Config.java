@@ -76,7 +76,7 @@ public class Config
     editor.putString(IDS_KEY, idsString);
     editor.commit();
 
-    Log.i(LOG_TAG, "Stored ids: " + idsString);
+    if(DaisyOnOffActivity.DEBUG) Log.i(LOG_TAG, "Stored ids: " + idsString);
   }
 
   public static List<AbstractOnOffButton> loadButtons(final Context context)

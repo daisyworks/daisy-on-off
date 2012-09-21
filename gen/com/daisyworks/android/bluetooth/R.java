@@ -100,6 +100,7 @@ public final class R {
         public static final int button_remove=0x7f040016;
         public static final int button_save=0x7f040018;
         public static final int button_scan=0x7f040007;
+        public static final int clear_message=0x7f040023;
         public static final int edit=0x7f040005;
         public static final int help=0x7f040001;
         public static final int label_button_label=0x7f04001e;

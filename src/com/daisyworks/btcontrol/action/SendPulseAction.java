@@ -16,7 +16,7 @@
     If not, see <http://www.gnu.org/licenses/>.
 
     Copyright 2011 DaisyWorks, Inc
-*/
+ */
 package com.daisyworks.btcontrol.action;
 
 import java.io.IOException;
@@ -28,43 +28,62 @@ import com.daisyworks.android.ThreadUtil;
 import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
+import com.daisyworks.btcontrol.DaisyOnOffActivity;
 
-public class SendPulseAction extends BaseBluetoothAction
-{
-  private final String cmdOn;
-  private final String cmdOff;
+public class SendPulseAction extends BaseBluetoothAction {
+	private final String cmdOn;
+	private final String cmdOff;
 
-  private final long[] pulseArray;
+	private final long[] pulseArray;
 
+	public SendPulseAction(final String cmdOn, final String cmdOff, final long[] pulseArray) {
+		this.cmdOn = cmdOn;
+		this.cmdOff = cmdOff;
+		this.pulseArray = pulseArray;
+	}
 
-  public SendPulseAction (final String cmdOn, final String cmdOff, final long[] pulseArray)
-  {
-    this.cmdOn = cmdOn;
-    this.cmdOff = cmdOff;
-    this.pulseArray = pulseArray;
-  }
+	@Override
+	protected void performIOAction(final AsyncReader reader, final Handler handler) throws IOException {
+		writeln(cmdOn);
+		String result = reader.readLine(1000);
 
-  @Override
-  protected void performIOAction (final AsyncReader reader, final Handler handler) throws IOException
-  {
-    writeln(cmdOn);
-    Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
+		if (DaisyOnOffActivity.DEBUG)
+			Log.i(BTCommThread.LOG_TAG, "Read: " + result);
 
-    boolean on = true;
+		if (!"AOK\r\n".equalsIgnoreCase(result)) {
+			handler.obtainMessage(BTCommThread.BLUETOOTH_CONNECTION_ERROR).sendToTarget();
+			throw new IOException("Error setting on/off, expected 'AOK', was: " + result);
+		}
 
-    for (int i = 0; i < pulseArray.length; i++)
-    {
-      long target = System.currentTimeMillis() + pulseArray[i];
-      writeln(on ? cmdOn : cmdOff);
-      ThreadUtil.waitUntil(target);
-      on = !on;
-    }
+		boolean on = true;
 
-    if (!on)
-    {
-      writeln(cmdOff);
-    }
+		for (int i = 0; i < pulseArray.length; i++) {
+			long target = System.currentTimeMillis() + pulseArray[i];
+			writeln(on ? cmdOn : cmdOff);
+			result = reader.readLine(1000);
 
-    Log.i(BTCommThread.LOG_TAG, "SendPulseAction: " + reader.readLine(100));
-  }
+			if (DaisyOnOffActivity.DEBUG)
+				Log.i(BTCommThread.LOG_TAG, "Read: " + result);
+
+			if (!"AOK\r\n".equalsIgnoreCase(result)) {
+				handler.obtainMessage(BTCommThread.BLUETOOTH_CONNECTION_ERROR).sendToTarget();
+				throw new IOException("Error setting on/off, expected 'AOK', was: " + result);
+			}
+			ThreadUtil.waitUntil(target);
+			on = !on;
+		}
+
+		if (!on) {
+			writeln(cmdOff);
+			result = reader.readLine(1000);
+
+			if (DaisyOnOffActivity.DEBUG)
+				Log.i(BTCommThread.LOG_TAG, "Read: " + result);
+
+			if (!"AOK\r\n".equalsIgnoreCase(result)) {
+				handler.obtainMessage(BTCommThread.BLUETOOTH_CONNECTION_ERROR).sendToTarget();
+				throw new IOException("Error settting on/off, expected 'AOK', was: " + result);
+			}
+		}
+	}
 }

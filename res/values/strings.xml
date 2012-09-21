@@ -20,4 +20,6 @@
     <string name="label.pin">Target Pin</string>
     <string name="label.button_type">Button Behavior</string>
     <string name="label.server">Server (host:port)</string>
+    <string name="clear_message"></string>
+
 </resources>

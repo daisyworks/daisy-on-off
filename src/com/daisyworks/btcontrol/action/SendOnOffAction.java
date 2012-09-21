@@ -27,6 +27,7 @@ import android.util.Log;
 import com.daisyworks.android.bluetooth.AsyncReader;
 import com.daisyworks.android.bluetooth.BTCommThread;
 import com.daisyworks.android.bluetooth.BaseBluetoothAction;
+import com.daisyworks.btcontrol.DaisyOnOffActivity;
 
 public class SendOnOffAction extends BaseBluetoothAction
 {
@@ -41,6 +42,14 @@ public class SendOnOffAction extends BaseBluetoothAction
   protected void performIOAction (final AsyncReader reader, final Handler handler) throws IOException
   {
     writeln(cmd);
-    Log.i(BTCommThread.LOG_TAG, "Read: " + reader.readLine(500));
+	String result = reader.readLine(1000);
+
+    if(DaisyOnOffActivity.DEBUG) Log.i(BTCommThread.LOG_TAG, "Read: " + result);
+    
+    if (!"AOK\r\n".equalsIgnoreCase(result))
+    {
+      handler.obtainMessage(BTCommThread.BLUETOOTH_CONNECTION_ERROR).sendToTarget();
+      throw new IOException("Error setting on/off, expected 'AOK', was: " + result);
+    }
   }
 }
