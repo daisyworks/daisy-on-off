@@ -13,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.daisyworks.android.bluetooth.BluetoothApplication;
 import com.daisyworks.android.widget.ListEntry;
+import com.daisyworks.btcontrol.DaisyOnOffActivity.CommHandler;
 
 public class ConfigureWifiButtonActivity extends Activity implements OnClickListener
 {
@@ -81,6 +83,12 @@ public class ConfigureWifiButtonActivity extends Activity implements OnClickList
     }
   }
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		((BluetoothApplication) getApplication()).stopCommThreads();
+	}
+	
   private void setSelection(final Spinner spinner, final String value)
   {
     @SuppressWarnings("unchecked")

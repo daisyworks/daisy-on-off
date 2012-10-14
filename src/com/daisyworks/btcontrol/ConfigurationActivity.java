@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
+import com.daisyworks.android.bluetooth.BluetoothApplication;
 import com.daisyworks.android.bluetooth.R;
+import com.daisyworks.btcontrol.DaisyOnOffActivity.CommHandler;
 
 public class ConfigurationActivity extends Activity implements OnClickListener
 {
@@ -50,6 +52,12 @@ public class ConfigurationActivity extends Activity implements OnClickListener
     ids = Config.loadIds(this);
     redoLayout();
   }
+  
+	@Override
+	protected void onPause() {
+		super.onPause();
+		((BluetoothApplication) getApplication()).stopCommThreads();
+	}
 
   @SuppressWarnings("null")
   protected void redoLayout()

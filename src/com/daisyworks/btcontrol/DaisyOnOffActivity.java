@@ -85,24 +85,20 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 		buttonAttributes = Config.loadButtons(this);
 		redoLayout();
 
-		stopCommThreads();
+		((BluetoothApplication) getApplication()).stopCommThreads();
 
 		for (final AbstractOnOffButton buttonAttr : buttonAttributes) {
 			final String deviceId = buttonAttr.getDeviceId();
-			if (!getDevices().containsKey(deviceId)) {
+			if (!((BluetoothApplication) getApplication()).deviceExits(deviceId)) {
 				final BluetoothAction[] initialActions = { new EnterCmdModeAction(), new SetupAction() };
 				final BTCommThread btComm = getBtCommThreadforNewActivity(handler, deviceId, 60000, initialActions);
 				if (DaisyOnOffActivity.DEBUG)
 					Log.d(Config.LOG_TAG, "Putting device: " + deviceId);
-				getDevices().put(deviceId, btComm);
+				((BluetoothApplication) getApplication()).putDevice(deviceId, btComm);
 				// try to pre-connect to make response faster
 				btComm.ensureConnected();
 			}
 		}
-	}
-
-	private Map<String, BTCommThread> getDevices() {
-		return ((BluetoothApplication) getApplication()).getDevices();
 	}
 
 	protected void redoLayout() {
@@ -178,18 +174,8 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 	@Override
 	protected void onPause() {
 		super.onPause();
-		stopCommThreads();
+		((BluetoothApplication) getApplication()).stopCommThreads();
 		((CommHandler) handler).stop();
-	}
-
-	protected void stopCommThreads() {
-		for (final BTCommThread btComm : getDevices().values()) {
-			if (btComm != null) {
-				btComm.shutdown();
-			}
-		}
-
-		getDevices().clear();
 	}
 
 	@Override
@@ -227,7 +213,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 
 	public void bluetoothPinOn(final BluetoothButton button) {
 		final String deviceId = button.getDeviceId();
-		final BTCommThread btComm = getDevices().get(deviceId);
+		final BTCommThread btComm = ((BluetoothApplication) getApplication()).getDevice(deviceId);
 		final int pin = button.getPin();
 
 		btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][ON]));
@@ -235,7 +221,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 
 	public void bluetoothPinOff(final BluetoothButton button) {
 		final String deviceId = button.getDeviceId();
-		final BTCommThread btComm = getDevices().get(deviceId);
+		final BTCommThread btComm = ((BluetoothApplication) getApplication()).getDevice(deviceId);
 		final int pin = button.getPin();
 
 		btComm.enqueueAction(new SendOnOffAction(COMMANDS[pin][OFF]));
@@ -243,7 +229,7 @@ public class DaisyOnOffActivity extends AbstractBluetoothActivity implements OnC
 
 	public void bluetoothSendPulse(final BluetoothButton button) {
 		final String deviceId = button.getDeviceId();
-		final BTCommThread btComm = getDevices().get(deviceId);
+		final BTCommThread btComm = ((BluetoothApplication) getApplication()).getDevice(deviceId);
 		final int pin = button.getPin();
 
 		btComm.enqueueAction(new SendPulseAction(COMMANDS[pin][ON], COMMANDS[pin][OFF], new long[] { 1000 }));

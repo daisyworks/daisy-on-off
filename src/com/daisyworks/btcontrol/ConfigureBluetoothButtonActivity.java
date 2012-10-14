@@ -19,8 +19,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.daisyworks.android.bluetooth.BluetoothApplication;
 import com.daisyworks.android.widget.AbstractTextWatcher;
 import com.daisyworks.android.widget.ListEntry;
+import com.daisyworks.btcontrol.DaisyOnOffActivity.CommHandler;
 
 public class ConfigureBluetoothButtonActivity extends Activity implements OnClickListener
 {
@@ -122,6 +124,12 @@ public class ConfigureBluetoothButtonActivity extends Activity implements OnClic
       saveButton.setEnabled(false);
     }
   }
+  
+	@Override
+	protected void onPause() {
+		super.onPause();
+		((BluetoothApplication) getApplication()).stopCommThreads();
+	}
 
   private void setSelection(final Spinner spinner, final String value)
   {
